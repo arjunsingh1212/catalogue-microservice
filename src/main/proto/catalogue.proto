@@ -1,0 +1,78 @@
+syntax="proto3";
+
+option java_multiple_files = true;
+option java_package = "org.arjun.CatalogueMicroservice";
+
+message User {
+  int32 userId = 1;
+  string userName = 2;
+}
+
+message Catalogue {
+  int32 catalogueId = 1;
+  int32 userId = 2;
+}
+
+message Item {
+
+  enum Type {
+    UNKNOWN = 0;
+    RAW = 1;
+    MANUFACTURED = 2;
+    IMPORTED = 3;
+  };
+
+  int32 itemId = 1;
+  int32 catalogueId = 2;
+  string name = 3;
+  int64 price = 4;
+  int32 quantity = 5;
+  Type type = 6;
+}
+
+message Status {
+  string status = 1;
+  int32 statusCode = 2;
+}
+
+message Id {
+  int32 id = 1;
+}
+
+message Empty {
+}
+
+service ItemService {
+
+  rpc AddItems(stream Item) returns (Status);
+
+  rpc DeleteItem(Id) returns (Status);
+  rpc DeleteItems(Empty) returns (Status); //Long Running operation
+
+  rpc GetItem(Id) returns (Item);
+  rpc GetItemsCatalogue(Catalogue) returns (stream Item);
+  rpc GetItemsUser(User) returns (stream Item);
+  rpc GetItemsAll(Empty) returns (stream Item);
+
+}
+
+service UserService {
+
+  rpc AddUser(User) returns (Status);
+
+  rpc DeleteUser(Id) returns (Status);
+
+  rpc GetUsersAll(Empty) returns (stream User);
+
+}
+
+service CatalogueService {
+
+  rpc AddCatalogue(Catalogue) returns (Status);
+
+  rpc DeleteCatalogue(Id) returns (Status);
+
+  rpc GetCatalogueUser(User) returns (stream Catalogue);
+  rpc GetCataloguesAll(Empty) returns (stream Catalogue);
+
+}
