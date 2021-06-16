@@ -25,7 +25,9 @@ DROP TABLE IF EXISTS `Catalogue`;
 CREATE TABLE `Catalogue` (
   `catalogueId` int NOT NULL,
   `userId` int NOT NULL,
+  `catalogueName` varchar(30) NOT NULL,
   PRIMARY KEY (`catalogueId`),
+  UNIQUE KEY `catalogueName_UNIQUE` (`catalogueName`),
   KEY `userId` (`userId`),
   CONSTRAINT `catalogue_ibfk_1` FOREIGN KEY (`userId`) REFERENCES `User` (`userId`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
@@ -55,6 +57,7 @@ CREATE TABLE `Item` (
   `itemQuantity` int DEFAULT NULL,
   `itemType` enum('UNKNOWN','RAW','MANUFACTURED','IMPORTED') NOT NULL,
   PRIMARY KEY (`itemId`),
+  UNIQUE KEY `itemName_UNIQUE` (`itemName`),
   KEY `catalogueId` (`catalogueId`),
   CONSTRAINT `item_ibfk_1` FOREIGN KEY (`catalogueId`) REFERENCES `Catalogue` (`catalogueId`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
@@ -79,7 +82,8 @@ DROP TABLE IF EXISTS `User`;
 CREATE TABLE `User` (
   `userId` int NOT NULL,
   `userName` varchar(30) NOT NULL,
-  PRIMARY KEY (`userId`)
+  PRIMARY KEY (`userId`),
+  UNIQUE KEY `userName_UNIQUE` (`userName`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -101,4 +105,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2021-06-15  9:58:51
+-- Dump completed on 2021-06-16  7:49:16

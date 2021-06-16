@@ -9,13 +9,15 @@ public class Catalogue {
   @Id
   private Integer catalogueId;
   private Integer userId;
+  private String catalogueName;
 
   public Catalogue() {
   }
 
-  public Catalogue(Integer catalogueId, Integer userId) {
+  public Catalogue(Integer catalogueId, Integer userId, String catalogueName) {
     this.catalogueId = catalogueId;
     this.userId = userId;
+    this.catalogueName = catalogueName;
   }
 
   public Integer getCatalogueId() {
@@ -32,6 +34,14 @@ public class Catalogue {
 
   public void setUserId(Integer userId) {
     this.userId = userId;
+  }
+
+  public String getCatalogueName() {
+    return catalogueName;
+  }
+
+  public void setCatalogueName(String catalogueName) {
+    this.catalogueName = catalogueName;
   }
 
   @Override
