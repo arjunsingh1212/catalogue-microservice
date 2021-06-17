@@ -25,7 +25,13 @@ public class UserService extends UserServiceGrpc.UserServiceImplBase {
    */
   @Override
   public void createUser(CreateUserRequest request, StreamObserver<User> responseObserver) {
-    super.createUser(request, responseObserver);
+    userRepo.save(new org.arjun.CatalogueMicroservice.entity.User(
+            request.getUser().getUserId(),
+            request.getUser().getUsername()));
+    User user = User.newBuilder().setUserId(request.getUser().getUserId()).
+            setUsername(request.getUser().getUsername()).build();
+    responseObserver.onNext(user);
+    responseObserver.onCompleted();
   }
 
   /**
