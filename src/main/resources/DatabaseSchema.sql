@@ -16,84 +16,90 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
--- Table structure for table `Catalogue`
+-- Table structure for table `catalogue`
 --
 
-DROP TABLE IF EXISTS `Catalogue`;
+DROP TABLE IF EXISTS `catalogue`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
  SET character_set_client = utf8mb4 ;
-CREATE TABLE `Catalogue` (
-  `catalogueId` int NOT NULL,
-  `userId` int NOT NULL,
-  `catalogueName` varchar(30) NOT NULL,
-  PRIMARY KEY (`catalogueId`),
-  UNIQUE KEY `catalogueName_UNIQUE` (`catalogueName`),
-  KEY `userId` (`userId`),
-  CONSTRAINT `catalogue_ibfk_1` FOREIGN KEY (`userId`) REFERENCES `User` (`userId`) ON DELETE CASCADE
+CREATE TABLE `catalogue` (
+  `catalogue_id` varchar(36) NOT NULL,
+  `user_id` varchar(36) NOT NULL,
+  `catalogue_name` varchar(255) NOT NULL,
+  `description` varchar(1000) DEFAULT NULL,
+  `created_on` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_on` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`catalogue_id`),
+  UNIQUE KEY `catalogue_name_UNIQUE` (`catalogue_name`),
+  UNIQUE KEY `user_id_UNIQUE` (`user_id`),
+  CONSTRAINT `catalogue_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `user` (`user_id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `Catalogue`
+-- Dumping data for table `catalogue`
 --
 
-LOCK TABLES `Catalogue` WRITE;
-/*!40000 ALTER TABLE `Catalogue` DISABLE KEYS */;
-/*!40000 ALTER TABLE `Catalogue` ENABLE KEYS */;
+LOCK TABLES `catalogue` WRITE;
+/*!40000 ALTER TABLE `catalogue` DISABLE KEYS */;
+/*!40000 ALTER TABLE `catalogue` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
--- Table structure for table `Item`
+-- Table structure for table `item`
 --
 
-DROP TABLE IF EXISTS `Item`;
+DROP TABLE IF EXISTS `item`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
  SET character_set_client = utf8mb4 ;
-CREATE TABLE `Item` (
-  `itemId` int NOT NULL,
-  `catalogueId` int NOT NULL,
-  `itemName` varchar(30) NOT NULL,
-  `itemPrice` decimal(10,0) DEFAULT NULL,
-  `itemQuantity` int DEFAULT NULL,
-  `itemType` enum('UNKNOWN','RAW','MANUFACTURED','IMPORTED') NOT NULL,
-  PRIMARY KEY (`itemId`),
-  UNIQUE KEY `itemName_UNIQUE` (`itemName`),
-  KEY `catalogueId` (`catalogueId`),
-  CONSTRAINT `item_ibfk_1` FOREIGN KEY (`catalogueId`) REFERENCES `Catalogue` (`catalogueId`) ON DELETE CASCADE
+CREATE TABLE `item` (
+  `item_id` varchar(36) NOT NULL,
+  `catalogue_id` varchar(36) NOT NULL,
+  `item_name` varchar(255) NOT NULL,
+  `created_on` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_on` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `item_price` decimal(10,0) DEFAULT NULL,
+  `item_quantity` int DEFAULT NULL,
+  `item_type` enum('TYPE_UNSPECIFIED','RAW','MANUFACTURED','IMPORTED') DEFAULT NULL,
+  PRIMARY KEY (`item_id`),
+  UNIQUE KEY `catalogue_id_UNIQUE` (`catalogue_id`),
+  CONSTRAINT `item_ibfk_1` FOREIGN KEY (`catalogue_id`) REFERENCES `catalogue` (`catalogue_id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `Item`
+-- Dumping data for table `item`
 --
 
-LOCK TABLES `Item` WRITE;
-/*!40000 ALTER TABLE `Item` DISABLE KEYS */;
-/*!40000 ALTER TABLE `Item` ENABLE KEYS */;
+LOCK TABLES `item` WRITE;
+/*!40000 ALTER TABLE `item` DISABLE KEYS */;
+/*!40000 ALTER TABLE `item` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
--- Table structure for table `User`
+-- Table structure for table `user`
 --
 
-DROP TABLE IF EXISTS `User`;
+DROP TABLE IF EXISTS `user`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
  SET character_set_client = utf8mb4 ;
-CREATE TABLE `User` (
-  `userId` int NOT NULL,
-  `userName` varchar(30) NOT NULL,
-  PRIMARY KEY (`userId`),
-  UNIQUE KEY `userName_UNIQUE` (`userName`)
+CREATE TABLE `user` (
+  `user_id` varchar(36) NOT NULL,
+  `user_name` varchar(255) NOT NULL,
+  `created_on` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_on` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`user_id`),
+  UNIQUE KEY `user_name_UNIQUE` (`user_name`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `User`
+-- Dumping data for table `user`
 --
 
-LOCK TABLES `User` WRITE;
-/*!40000 ALTER TABLE `User` DISABLE KEYS */;
-/*!40000 ALTER TABLE `User` ENABLE KEYS */;
+LOCK TABLES `user` WRITE;
+/*!40000 ALTER TABLE `user` DISABLE KEYS */;
+/*!40000 ALTER TABLE `user` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
@@ -105,4 +111,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2021-06-16  7:49:16
+-- Dump completed on 2021-06-16 14:27:37

@@ -1,4 +1,6 @@
-syntax="proto3";
+syntax = "proto3";
+
+package org.arjun.CatalogueMicroservice;
 
 option java_multiple_files = true;
 option java_package = "org.arjun.CatalogueMicroservice";
@@ -11,19 +13,15 @@ service ItemService {
   rpc CreateItem(CreateItemRequest) returns (Item);
 
   //Add a stream of Items to the DB
-  rpc CreateItemsStream(stream CreateItemsStreamRequest) returns (ItemsStream);
+  rpc CreateItemStream(stream CreateItemStreamRequest) returns (ItemStream);
 
   //Delete a specific Item
   rpc DeleteItem(DeleteItemRequest) returns (google.protobuf.Empty);
 
   //Get an specific Item
   rpc GetItem(GetItemRequest) returns (Item);
-  //Get all items
-  rpc GetItems(GetItemsRequest) returns (stream Items);
-  //Get all items of a specific catalogue
-  rpc GetItemsCatalogue(GetItemsCatalogueRequest) returns (stream ItemsCatalogue);
-  //Get all items of a specific user
-  rpc GetItemsUser(GetItemsUserRequest) returns (stream ItemsUser);
+  //Get multiple items (all, of particular catalogue or of particular user)
+  rpc GetItemStream(GetItemStreamRequest) returns (stream ItemStream);
 }
 
 //Services related to Catalogue
@@ -34,12 +32,10 @@ service CatalogueService {
   //Delete a specific catalogue
   rpc DeleteCatalogue(DeleteCatalogueRequest) returns (google.protobuf.Empty);
 
-  //Get all catalogues
-  rpc GetCatalogues(GetCataloguesRequest) returns (stream Catalogues);
   //Get a specific catalogue
   rpc GetCatalogue(GetCatalogueRequest) returns (Catalogue);
-  //Get all catalogues of an user
-  rpc GetCataloguesUser(GetCataloguesUserRequest) returns (stream CataloguesUser);
+  //Get multiple catalogues (all, of one particular user)
+  rpc GetCatalogueStream(GetCatalogueStreamRequest) returns (stream CatalogueStream);
 }
 
 //Services related to User
@@ -53,24 +49,45 @@ service UserService {
   //Get a specific user
   rpc GetUser(GetUserRequest) returns (User);
   //Get all Users
-  rpc GetUsers(GetUsersRequest) returns (stream Users);
+  rpc GetUserStream(GetUserStreamRequest) returns (stream UserStream);
 }
 
-
-//Request to get all users
-message GetUsersRequest {
-}
 
 //User Data
 message User {
   //Id of user
-  int32 user_id = 1;
+  string user_id = 1;
   //Name of user
   string username = 2;
 }
 
+//Request to create an user
+message CreateUserRequest {
+  //To send the user details to create user
+  User user = 1;
+}
+
+//Request to delete a user
+message DeleteUserRequest {
+  //id of User
+  string user_id = 1;
+}
+
+//Request to get a user's details
+message GetUserRequest {
+  //id of User
+  string user_id = 1;
+}
+
+//Request to get all users
+message GetUserStreamRequest {
+  //bool variable to denote all users are need to be fetched.
+  //It might seem irrelevant, but done in sync with oneof approach of filtering catalogues and items
+  bool all = 1;
+}
+
 //More than one user
-message Users {
+message UserStream {
   //List of users (To be used in stream)
   User user = 1;
 }
@@ -78,20 +95,47 @@ message Users {
 //Catalogue Data
 message Catalogue {
   //Id of catalogue
-  int32 catalogue_id = 1;
+  string catalogue_id = 1;
   //Id of user whom the catalogue belongs
-  int32 user_id = 2;
+  string user_id = 2;
+  //Name of catalogue
+  string catalogue_name = 3;
+  //Description for catalogue
+  string description = 4;
 }
 
-//More than one catalogues
-message Catalogues {
-  //List of catalogues (To be used in stream)
+//Request to create a catalogue
+message CreateCatalogueRequest {
+  //Send details of catalogue to be created
   Catalogue catalogue = 1;
 }
 
-//More than one catalogues of specific user
-message CataloguesUser {
-  //List of users (To be used in stream)
+//Request to delete a catalogue
+message DeleteCatalogueRequest {
+  //id of Catalogue
+  string catalogue_id = 1;
+}
+
+//Request to get a specific catalogues
+message GetCatalogueRequest {
+  //id of Catalogue
+  string name = 1;
+}
+
+//Request to get catalogues based on either of the two criteria: all, of specific user
+message GetCatalogueStreamRequest {
+  //Selecting id based on one of the categories
+  oneof selection_type_id {
+    //Get all items of this specific user
+    string user_id = 1;
+    //Get all items
+    bool all = 2;
+  }
+}
+
+//More than one catalogues
+message CatalogueStream {
+  //List of catalogues (To be used in stream)
   Catalogue catalogue = 1;
 }
 
@@ -109,136 +153,67 @@ message Item {
     IMPORTED = 3;
   };
   //Id of item
-  int32 item_id = 1;
+  string item_id = 1;
   //If of catalogue in which the item belongs
-  int32 catalogue_id = 2;
+  string catalogue_id = 2;
   //Name of item
   string name = 3;
   //Price of item
-  int64 price = 4;
+  double price = 4;
   //Quantity or number of instances of the item
-  int32 quantity = 5;
+  uint32 quantity = 5;
   //Type of item
   Type type = 6;
 }
 
-//More than one item
-message Items {
-  //List of items (To be used in stream)
-  Item item = 1;
-}
-
-//More than one item of some specific Catalogue
-message ItemsCatalogue {
-  //List of items (To be used in stream)
-  Item item = 1;
-}
-
-//More than one item of some specific user
-message ItemsUser {
-  //List of items (To be used in stream)
-  Item item = 1;
-}
 
 //Data for item creation request
 message CreateItemRequest {
-  // The parent resource
-  string parent = 1;
   //To send item to be persisted in DB
-  Item item = 2;
+  Item item = 1;
 }
 
 //Data for stream of item creation request
-message CreateItemsStreamRequest {
-  // The parent resource
-  string parent = 1;
+message CreateItemStreamRequest {
   //To send item to be persisted in DB
-  Item item = 2;
+  Item item = 1;
 }
 
 //Response received after CreateItemsStreamRequest
-message ItemsStream {
-  //List of items
-  repeated Item items = 1;
+message ItemStream {
+  //List of items (to be used in stream)
+  Item item = 1;
 }
 
 //Data required to delete the item
 message DeleteItemRequest {
-  //Sending name of item
-  string name = 1;
+  //Sending id of item
+  string item_id = 1;
 }
 
 //Request to get an item
 message GetItemRequest {
-  //Sending name of item
-  string name = 1;
+  //Sending id of item
+  string item_id = 1;
 }
 
-//Request to get all items
-message GetItemsRequest {
+//Request to get items based on either of the three criteria: all, catalogue, user
+message GetItemStreamRequest {
+  //Selecting id based on one of the three categories
+  oneof selection_type_id {
+    //Get all items of this specific catalogue
+    string catalogue_id = 1;
+    //Get all items of this specific user
+    string user_id = 2;
+    //Get all items
+    bool all = 3;
+  }
 }
 
-//Request to get items of a specific catalogue
-message GetItemsCatalogueRequest {
-  //Name of Catalogue
-  string name = 1;
-}
 
 
-//Request to get items of a specific user
-message GetItemsUserRequest {
-  //Name of user
-  string name = 1;
-}
 
-//Request to create a catalogue
-message CreateCatalogueRequest {
-  // The parent resource
-  string parent = 1;
-  //Send details of catalogue to be created
-  Catalogue catalogue = 2;
-}
 
-//Request to delete a catalogue
-message DeleteCatalogueRequest {
-  //name of Catalogue
-  string name = 1;
-}
 
-//Request to get a specific catalogues
-message GetCatalogueRequest {
-  //name of Catalogue
-  string name = 1;
-}
-
-//Request to get all catalogues
-message GetCataloguesRequest {
-}
-
-//Request to get all catalogues of an user
-message GetCataloguesUserRequest {
-  //name of User whose catalogues you want to get
-  string name = 1;
-}
-
-//Request to create an user
-message CreateUserRequest {
-  // The parent resource
-  string parent = 1;
-  //To send the user details to create user
-  User user = 2;
-}
-
-//Request to delete a user
-message DeleteUserRequest {
-  //name of User
-  string name = 1;
-}
-
-//Request to get a user's details
-message GetUserRequest {
-  //name of User
-  string name = 1;
-}
 
 

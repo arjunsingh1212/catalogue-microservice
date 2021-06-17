@@ -2,27 +2,28 @@ package org.arjun.CatalogueMicroservice.entity;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import java.util.UUID;
 
 @Entity
 public class User {
 
   @Id
-  private Integer userId;
+  private String userId;
   private String userName;
 
   public User() {
   }
 
-  public User(Integer uid, String uname) {
+  public User(String uid, String uname) {
     this.userId = uid;
     this.userName = uname;
   }
 
-  public Integer getUserId() {
+  public String getUserId() {
     return userId;
   }
 
-  public void setUserId(Integer userId) {
+  public void setUserId(String userId) {
     this.userId = userId;
   }
 
