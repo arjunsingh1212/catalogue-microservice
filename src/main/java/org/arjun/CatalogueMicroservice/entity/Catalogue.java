@@ -7,32 +7,34 @@ import javax.persistence.Id;
 public class Catalogue {
 
   @Id
-  private Integer catalogueId;
-  private Integer userId;
+  private String catalogueId;
+  private String userId;
   private String catalogueName;
+  private String description;
 
   public Catalogue() {
   }
 
-  public Catalogue(Integer catalogueId, Integer userId, String catalogueName) {
+  public Catalogue(String catalogueId, String userId, String catalogueName, String description) {
     this.catalogueId = catalogueId;
     this.userId = userId;
     this.catalogueName = catalogueName;
+    this.description = description;
   }
 
-  public Integer getCatalogueId() {
+  public String getCatalogueId() {
     return catalogueId;
   }
 
-  public void setCatalogueId(Integer catalogueId) {
+  public void setCatalogueId(String catalogueId) {
     this.catalogueId = catalogueId;
   }
 
-  public Integer getUserId() {
+  public String getUserId() {
     return userId;
   }
 
-  public void setUserId(Integer userId) {
+  public void setUserId(String userId) {
     this.userId = userId;
   }
 
@@ -44,11 +46,25 @@ public class Catalogue {
     this.catalogueName = catalogueName;
   }
 
+  public String getDescription() {
+    return description;
+  }
+
+  public void setDescription(String description) {
+    this.description = description;
+  }
+
   @Override
   public String toString() {
     return "Catalogue{" +
             "catalogueId=" + catalogueId +
             ", userId=" + userId +
             '}';
+  }
+
+  public org.arjun.CatalogueMicroservice.Catalogue toProto() {
+    return org.arjun.CatalogueMicroservice.Catalogue.newBuilder().
+            setUserId(getUserId()).setCatalogueName(getCatalogueName()).
+            setDescription(getDescription()).setCatalogueId(getCatalogueId()).build();
   }
 }

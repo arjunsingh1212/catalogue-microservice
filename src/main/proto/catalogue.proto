@@ -13,7 +13,7 @@ service ItemService {
   rpc CreateItem(CreateItemRequest) returns (Item);
 
   //Add a stream of Items to the DB
-  rpc CreateItemStream(stream CreateItemStreamRequest) returns (ItemStream);
+  rpc CreateItemStream(stream CreateItemStreamRequest) returns (CreateItemStreamResponse);
 
   //Delete a specific Item
   rpc DeleteItem(DeleteItemRequest) returns (google.protobuf.Empty);
@@ -119,7 +119,7 @@ message DeleteCatalogueRequest {
 //Request to get a specific catalogues
 message GetCatalogueRequest {
   //id of Catalogue
-  string name = 1;
+  string catalogue_id = 1;
 }
 
 //Request to get catalogues based on either of the two criteria: all, of specific user
@@ -177,6 +177,14 @@ message CreateItemRequest {
 message CreateItemStreamRequest {
   //To send item to be persisted in DB
   Item item = 1;
+}
+
+//Data for stream of item creation response
+message CreateItemStreamResponse {
+  //Response as status message
+  string status = 1;
+  //Failure/Success code (0 for success)
+  int32 status_code = 2;
 }
 
 //Response received after CreateItemsStreamRequest
