@@ -7,7 +7,7 @@ import org.arjun.CatalogueMicroservice.repository.UserRepo;
 import org.lognet.springboot.grpc.GRpcService;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import java.util.UUID;
+import java.util.Optional;
 
 @GRpcService
 public class UserService extends UserServiceGrpc.UserServiceImplBase {
@@ -44,7 +44,9 @@ public class UserService extends UserServiceGrpc.UserServiceImplBase {
    */
   @Override
   public void deleteUser(DeleteUserRequest request, StreamObserver<Empty> responseObserver) {
-    super.deleteUser(request, responseObserver);
+    userRepo.deleteById(request.getUserId());
+    responseObserver.onNext(Empty.newBuilder().build());
+    responseObserver.onCompleted();
   }
 
   /**
@@ -57,7 +59,10 @@ public class UserService extends UserServiceGrpc.UserServiceImplBase {
    */
   @Override
   public void getUser(GetUserRequest request, StreamObserver<User> responseObserver) {
-    super.getUser(request, responseObserver);
+    Optional<org.arjun.CatalogueMicroservice.entity.User> entry = userRepo.findById(request.getUserId());
+    entry.map(e -> e.toProto())
+            .ifPresent(responseObserver::onNext);
+    responseObserver.onCompleted();
   }
 
   /**
@@ -70,6 +75,9 @@ public class UserService extends UserServiceGrpc.UserServiceImplBase {
    */
   @Override
   public void getUserStream(GetUserStreamRequest request, StreamObserver<UserStream> responseObserver) {
-    super.getUserStream(request, responseObserver);
+    userRepo.findAll().forEach(e -> {
+      responseObserver.onNext(UserStream.newBuilder().setUser(e.toProto()).build());
+    });
+    responseObserver.onCompleted();
   }
 }

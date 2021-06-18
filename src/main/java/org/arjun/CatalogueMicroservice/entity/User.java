@@ -42,4 +42,9 @@ public class User {
             ", uname='" + userName + '\'' +
             '}';
   }
+
+  public org.arjun.CatalogueMicroservice.User toProto() {
+    return org.arjun.CatalogueMicroservice.User.newBuilder().
+            setUserId(getUserId()).setUsername(getUserName()).build();
+  }
 }

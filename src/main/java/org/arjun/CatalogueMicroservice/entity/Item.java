@@ -1,5 +1,6 @@
 package org.arjun.CatalogueMicroservice.entity;
 
+
 import org.arjun.assignment1.Type;
 import org.arjun.assignment1.item.ItemEntity;
 
@@ -11,36 +12,36 @@ import java.math.BigDecimal;
 public class Item extends ItemEntity {
 
   @Id
-  private Integer itemId;
-  private Integer catalogueId;
+  private String itemId;
+  private String catalogueId;
 
   public Item() {
   }
 
-  public Item(Integer itemId, Integer catalogueId) {
+  public Item(String itemId, String catalogueId) {
     this.itemId = itemId;
     this.catalogueId = catalogueId;
   }
 
-  public Item(String name, BigDecimal price, int quantity, Type type, Integer itemId, Integer catalogueId) {
+  public Item(String name, BigDecimal price, int quantity, Type type, String itemId, String catalogueId) {
     super(name, price, quantity, type);
     this.itemId = itemId;
     this.catalogueId = catalogueId;
   }
 
-  public Integer getItemId() {
+  public String getItemId() {
     return itemId;
   }
 
-  public void setItemId(Integer itemId) {
+  public void setItemId(String itemId) {
     this.itemId = itemId;
   }
 
-  public Integer getCatalogueId() {
+  public String getCatalogueId() {
     return catalogueId;
   }
 
-  public void setCatalogueId(Integer catalogueId) {
+  public void setCatalogueId(String catalogueId) {
     this.catalogueId = catalogueId;
   }
 
@@ -50,5 +51,31 @@ public class Item extends ItemEntity {
             "itemId=" + itemId +
             ", catalogueId=" + catalogueId +
             '}';
+  }
+
+  public org.arjun.CatalogueMicroservice.Item toProto() {
+
+    org.arjun.CatalogueMicroservice.Item.Type type;
+    switch (getType()) {
+      case RAW:
+        type = org.arjun.CatalogueMicroservice.Item.Type.RAW;
+        break;
+
+      case MANUFACTURED:
+        type = org.arjun.CatalogueMicroservice.Item.Type.MANUFACTURED;
+        break;
+
+      case IMPORTED:
+        type = org.arjun.CatalogueMicroservice.Item.Type.IMPORTED;
+        break;
+
+      default:
+        type = org.arjun.CatalogueMicroservice.Item.Type.TYPE_UNSPECIFIED;
+        break;
+    }
+    return org.arjun.CatalogueMicroservice.Item.newBuilder().
+            setItemId(getItemId()).setCatalogueId(getCatalogueId()).setName(getName()).
+            setPrice(Double.parseDouble(getPrice().toString())).setQuantity(getQuantity()).
+            setType(type).build();
   }
 }
