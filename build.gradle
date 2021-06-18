@@ -1,7 +1,11 @@
 plugins {
 	id 'org.springframework.boot' version '2.5.1'
 	id 'io.spring.dependency-management' version '1.0.11.RELEASE'
+	id "com.google.protobuf" version "0.8.16"
 	id 'java'
+	id 'checkstyle'
+	id 'pmd'
+	id 'jacoco'
 }
 
 group = 'org.arjun'
@@ -15,8 +19,114 @@ repositories {
 dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+
+	//Testing
+	testImplementation 'org.junit.jupiter:junit-jupiter-api:5.7.0'
+	testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.7.0'
+
+	// https://mvnrepository.com/artifact/mysql/mysql-connector-java
+	implementation group: 'mysql', name: 'mysql-connector-java', version: '8.0.25'
+	// https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-data-jpa
+	implementation group: 'org.springframework.boot', name: 'spring-boot-starter-data-jpa', version: '2.5.1'
+
+    // https://mvnrepository.com/artifact/com.google.protobuf/protobuf-java
+	compile group: 'com.google.protobuf', name: 'protobuf-java', version: '3.17.2'
+	compile group: 'com.google.protobuf', name: 'protobuf-java-util', version: '3.17.2'
+
+	// https://mvnrepository.com/artifact/io.grpc/grpc-all
+	compile group: 'io.grpc', name: 'grpc-all', version: '1.38.0'
+
+	// https://mvnrepository.com/artifact/io.grpc/grpc-services
+	compile group: 'io.grpc', name: 'grpc-services', version: '1.38.0'
+
+	// https://mvnrepository.com/artifact/javax.annotation/javax.annotation-api
+	compile group: 'javax.annotation', name: 'javax.annotation-api', version: '1.3.2'
+
+	//LogNet
+	compile 'io.github.lognet:grpc-spring-boot-starter:4.5.3'
+
+}
+
+sourceSets {
+	main {
+		java {
+			srcDirs 'build/generated/source/proto/main/grpc'
+			srcDirs 'build/generated/source/proto/main/java'
+		}
+	}
+}
+
+protobuf {
+	protoc {
+		artifact = 'com.google.protobuf:protoc:3.17.2'
+	}
+
+	plugins {
+		grpc {
+			artifact = 'io.grpc:protoc-gen-grpc-java:1.38.0'
+		}
+	}
+
+	generateProtoTasks {
+		all()*.plugins {
+			grpc {}
+		}
+	}
 }
 
 test {
 	useJUnitPlatform()
 }
+
+jacocoTestReport{
+	dependsOn test
+	reports {
+		xml.enabled true
+		html.enabled true
+	}
+	finalizedBy jacocoTestCoverageVerification
+}
+
+jacocoTestCoverageVerification {
+	violationRules {
+		rule {
+			enabled = true
+			limit {
+				minimum = 0.0
+			}
+		}
+	}
+}
+
+configurations {
+	checkstyleConfig
+}
+
+dependencies {
+	checkstyleConfig("com.puppycrawl.tools:checkstyle:8.29") { transitive = false }
+}
+
+checkstyle {
+	toolVersion '8.29'
+	config = resources.text.fromArchiveEntry(configurations.checkstyleConfig, 'google_checks.xml')
+	ignoreFailures = true
+}
+
+//checkstyle {
+//    configFile = file("${rootDir}/config/checkstyle/checkstyle.xml")
+//}
+
+tasks.withType(Pmd){
+	reports{
+		xml.enabled=true
+		html.enabled=true
+	}
+}
+
+pmd {
+	toolVersion = '6.30.0'
+	ruleSets = []
+	ruleSetFiles = files("$rootDir/config/pmd/pmd-rules.xml")
+	ignoreFailures = true
+}
+
