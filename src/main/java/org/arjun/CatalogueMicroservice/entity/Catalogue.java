@@ -1,9 +1,9 @@
 package org.arjun.CatalogueMicroservice.entity;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 @Entity
+@Table(name = "catalogue")
 public class Catalogue {
 
   @Id
@@ -57,8 +57,10 @@ public class Catalogue {
   @Override
   public String toString() {
     return "Catalogue{" +
-            "catalogueId=" + catalogueId +
-            ", userId=" + userId +
+            "catalogueId='" + catalogueId + '\'' +
+            ", userId='" + userId + '\'' +
+            ", catalogueName='" + catalogueName + '\'' +
+            ", description='" + description + '\'' +
             '}';
   }
 

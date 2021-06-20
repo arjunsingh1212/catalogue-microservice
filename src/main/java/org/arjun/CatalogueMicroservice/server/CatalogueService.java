@@ -5,10 +5,12 @@ import io.grpc.stub.StreamObserver;
 import org.arjun.CatalogueMicroservice.*;
 import org.arjun.CatalogueMicroservice.repository.CatalogueRepo;
 import org.arjun.CatalogueMicroservice.repository.UserRepo;
+import org.lognet.springboot.grpc.GRpcService;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.Optional;
 
+@GRpcService
 public class CatalogueService extends CatalogueServiceGrpc.CatalogueServiceImplBase {
   @Autowired
   CatalogueRepo catalogueRepo;
@@ -26,11 +28,13 @@ public class CatalogueService extends CatalogueServiceGrpc.CatalogueServiceImplB
    */
   @Override
   public void createCatalogue(CreateCatalogueRequest request, StreamObserver<Catalogue> responseObserver) {
-    catalogueRepo.save(new org.arjun.CatalogueMicroservice.entity.Catalogue(
+    org.arjun.CatalogueMicroservice.entity.Catalogue catalogue =
+            new org.arjun.CatalogueMicroservice.entity.Catalogue(
             request.getCatalogue().getCatalogueId(),
-            request.getCatalogue().getCatalogueName(),
             request.getCatalogue().getUserId(),
-            request.getCatalogue().getDescription()));
+            request.getCatalogue().getCatalogueName(),
+            request.getCatalogue().getDescription());
+    catalogueRepo.save(catalogue);
     responseObserver.onNext(request.getCatalogue());
     responseObserver.onCompleted();
   }

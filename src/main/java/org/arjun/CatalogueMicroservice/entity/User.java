@@ -1,15 +1,18 @@
 package org.arjun.CatalogueMicroservice.entity;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import java.util.UUID;
+import org.springframework.stereotype.Component;
+
+import javax.persistence.*;
+import java.util.*;
 
 @Entity
+@Table(name = "user")
 public class User {
 
   @Id
   private String userId;
   private String userName;
+
 
   public User() {
   }
@@ -47,4 +50,6 @@ public class User {
     return org.arjun.CatalogueMicroservice.User.newBuilder().
             setUserId(getUserId()).setUsername(getUserName()).build();
   }
+
+
 }

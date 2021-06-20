@@ -7,12 +7,14 @@ import org.arjun.CatalogueMicroservice.repository.CatalogueRepo;
 import org.arjun.CatalogueMicroservice.repository.ItemRepo;
 import org.arjun.CatalogueMicroservice.repository.UserRepo;
 import org.arjun.assignment1.Type;
+import org.lognet.springboot.grpc.GRpcService;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
 
+@GRpcService
 public class ItemService extends ItemServiceGrpc.ItemServiceImplBase {
   @Autowired
   ItemRepo itemRepo;
@@ -37,7 +39,7 @@ public class ItemService extends ItemServiceGrpc.ItemServiceImplBase {
             request.getItem().getName(),
             BigDecimal.valueOf(request.getItem().getPrice()),
             request.getItem().getQuantity(),
-            Type.valueOf(request.getItem().getType().toString()),
+            request.getItem().getType().toString(),
             request.getItem().getItemId(),
             request.getItem().getCatalogueId()
     ));
@@ -54,14 +56,15 @@ public class ItemService extends ItemServiceGrpc.ItemServiceImplBase {
    */
   @Override
   public StreamObserver<CreateItemStreamRequest> createItemStream(StreamObserver<CreateItemStreamResponse> responseObserver) {
-    return new StreamObserver<CreateItemStreamRequest>() {
+    StreamObserver<CreateItemStreamRequest> requestStreamObserver =
+            new StreamObserver<CreateItemStreamRequest>() {
       @Override
       public void onNext(CreateItemStreamRequest value) {
         itemRepo.save(new org.arjun.CatalogueMicroservice.entity.Item(
                 value.getItem().getName(),
                 BigDecimal.valueOf(value.getItem().getPrice()),
                 value.getItem().getQuantity(),
-                Type.valueOf(value.getItem().getType().toString()),
+                value.getItem().getType().toString(),
                 value.getItem().getItemId(),
                 value.getItem().getCatalogueId()));
       }
@@ -78,6 +81,7 @@ public class ItemService extends ItemServiceGrpc.ItemServiceImplBase {
         responseObserver.onCompleted();
       }
     };
+    return requestStreamObserver;
   }
 
   /**
