@@ -9,24 +9,26 @@ import javax.persistence.Id;
 import java.math.BigDecimal;
 
 @Entity
-public class Item extends ItemEntity {
+public class Item {
 
   @Id
   private String itemId;
   private String catalogueId;
+  private String name;
+  private BigDecimal price;
+  private int quantity;
+  private String type;
 
   public Item() {
   }
 
-  public Item(String itemId, String catalogueId) {
+  public Item(String name, BigDecimal price, int quantity, String type, String itemId, String catalogueId) {
     this.itemId = itemId;
     this.catalogueId = catalogueId;
-  }
-
-  public Item(String name, BigDecimal price, int quantity, Type type, String itemId, String catalogueId) {
-    super(name, price, quantity, type);
-    this.itemId = itemId;
-    this.catalogueId = catalogueId;
+    this.name = name;
+    this.price = price;
+    this.quantity = quantity;
+    this.type = type;
   }
 
   public String getItemId() {
@@ -45,6 +47,38 @@ public class Item extends ItemEntity {
     this.catalogueId = catalogueId;
   }
 
+  public String getName() {
+    return name;
+  }
+
+  public void setName(String name) {
+    this.name = name;
+  }
+
+  public BigDecimal getPrice() {
+    return price;
+  }
+
+  public void setPrice(BigDecimal price) {
+    this.price = price;
+  }
+
+  public int getQuantity() {
+    return quantity;
+  }
+
+  public void setQuantity(int quantity) {
+    this.quantity = quantity;
+  }
+
+  public String getType() {
+    return type;
+  }
+
+  public void setType(String type) {
+    this.type = type;
+  }
+
   @Override
   public String toString() {
     return "Item{" +
@@ -57,15 +91,15 @@ public class Item extends ItemEntity {
 
     org.arjun.CatalogueMicroservice.Item.Type type;
     switch (getType()) {
-      case RAW:
+      case "RAW":
         type = org.arjun.CatalogueMicroservice.Item.Type.RAW;
         break;
 
-      case MANUFACTURED:
+      case "MANUFACTURED":
         type = org.arjun.CatalogueMicroservice.Item.Type.MANUFACTURED;
         break;
 
-      case IMPORTED:
+      case "IMPORTED":
         type = org.arjun.CatalogueMicroservice.Item.Type.IMPORTED;
         break;
 

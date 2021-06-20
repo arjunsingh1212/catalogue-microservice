@@ -6,6 +6,8 @@ import org.arjun.CatalogueMicroservice.*;
 import org.arjun.CatalogueMicroservice.repository.UserRepo;
 import org.lognet.springboot.grpc.GRpcService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.Optional;
 
@@ -14,6 +16,8 @@ public class UserService extends UserServiceGrpc.UserServiceImplBase {
 
   @Autowired
   UserRepo userRepo;
+
+  private static final Logger logger = LogManager.getLogger(UserService.class);
 
   /**
    * <pre>
@@ -28,6 +32,7 @@ public class UserService extends UserServiceGrpc.UserServiceImplBase {
     userRepo.save(new org.arjun.CatalogueMicroservice.entity.User(
             request.getUser().getUserId(),
             request.getUser().getUsername()));
+    logger.info("The user is created.");
     User user = User.newBuilder().setUserId(request.getUser().getUserId()).
             setUsername(request.getUser().getUsername()).build();
     responseObserver.onNext(user);
