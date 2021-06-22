@@ -106,15 +106,15 @@ dependencies {
 	checkstyleConfig("com.puppycrawl.tools:checkstyle:8.29") { transitive = false }
 }
 
-checkstyle {
-	toolVersion '8.29'
-	config = resources.text.fromArchiveEntry(configurations.checkstyleConfig, 'google_checks.xml')
-	ignoreFailures = true
-}
-
 //checkstyle {
-//    configFile = file("${rootDir}/config/checkstyle/checkstyle.xml")
+//	toolVersion '8.29'
+//	config = resources.text.fromArchiveEntry(configurations.checkstyleConfig, 'google_checks.xml')
+//	ignoreFailures = true
 //}
+
+checkstyle {
+    configFile = file("${rootDir}/config/checkstyle/checkstyle.xml")
+}
 
 tasks.withType(Pmd){
 	reports{
