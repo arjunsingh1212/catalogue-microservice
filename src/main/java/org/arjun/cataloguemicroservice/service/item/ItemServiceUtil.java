@@ -27,8 +27,8 @@ public class ItemServiceUtil implements org.arjun.cataloguemicroservice.service.
     itemRepo.deleteById(itemId);
   }
 
-  public Optional<Item> getItemService(String itemId) {
-    return itemRepo.findById(itemId);
+  public Item getItemService(String itemId, String parentCatalogueId) {
+    return itemRepo.findByItemIdAndCatalogueId(itemId,parentCatalogueId);
   }
 
   public List<Item> getItemStreamByCatalogueId(String catalogueId) {

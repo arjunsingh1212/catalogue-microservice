@@ -10,8 +10,8 @@ public interface Item {
 
   void deleteItemService(String itemId);
 
-  Optional<org.arjun.cataloguemicroservice.entity.Item>
-      getItemService(String itemId);
+  org.arjun.cataloguemicroservice.entity.Item
+      getItemService(String itemId,String parentCatalogueId);
 
   List<org.arjun.cataloguemicroservice.entity.Item>
       getItemStreamByCatalogueId(String catalogueId);

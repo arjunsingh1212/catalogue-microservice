@@ -203,6 +203,8 @@ message DeleteItemRequest {
 message GetItemRequest {
   //Sending id of item
   string item_id = 1;
+  //Sending id of catalogue (parent)
+  string parent_catalogue_id = 2;
 }
 
 //Request to get items based on either of the three criteria: all, catalogue, user

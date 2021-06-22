@@ -10,4 +10,6 @@ import org.springframework.stereotype.Component;
 public interface ItemRepo extends JpaRepository<Item, String> {
 
   List<Item> findByCatalogueId(String catalogueId);
+
+  Item findByItemIdAndCatalogueId(String itemId, String parentCatalogueId);
 }

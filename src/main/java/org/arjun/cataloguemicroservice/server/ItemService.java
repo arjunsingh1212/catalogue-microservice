@@ -75,10 +75,9 @@ public class ItemService extends ItemServiceGrpc.ItemServiceImplBase {
 
   @Override
   public void getItem(GetItemRequest request, StreamObserver<Item> responseObserver) {
-    Optional<org.arjun.cataloguemicroservice.entity.Item> entry =
-            itemServiceUtil.getItemService(request.getItemId());
-    entry.map(e -> e.toProto())
-            .ifPresent(responseObserver::onNext);
+    org.arjun.cataloguemicroservice.entity.Item item =
+            itemServiceUtil.getItemService(request.getItemId(),request.getParentCatalogueId());
+    responseObserver.onNext(item.toProto());
     responseObserver.onCompleted();
   }
 

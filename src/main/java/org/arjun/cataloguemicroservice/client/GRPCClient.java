@@ -181,9 +181,10 @@ public class GRPCClient {
     }
   }
 
-  private void getItem(String itemId) {
-    GetItemRequest request =
-            GetItemRequest.newBuilder().setItemId(itemId).build();
+  private void getItem(String itemId, String parentCatalogueId) {
+    GetItemRequest request = GetItemRequest.newBuilder()
+            .setItemId(itemId)
+            .setParentCatalogueId(parentCatalogueId).build();
     Item response = stubItem.getItem(request);
     System.out.println("Response: " + response.toString());
   }
@@ -235,7 +236,7 @@ public class GRPCClient {
 
     //    client.deleteItem("99eaf317-c27a-43d2-957f-8ad11d8e2a38");
 
-    //    client.getItem("8c0e7de8-1156-41f2-b582-d756785927dd");
+        client.getItem("8c0e7de8-1156-41f2-b582-d756785927dd","f7794a0b-8a34-449b-a5b1-af3609aa31c6");
 
     //    client.getItemStream1();
     //    client.getItemStream2();
