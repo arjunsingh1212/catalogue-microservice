@@ -26,8 +26,10 @@ public class CatalogueService extends CatalogueServiceGrpc.CatalogueServiceImplB
   CatalogueServiceUtil catalogueServiceUtil;
 
   @Override
-  public void createCatalogue(CreateCatalogueRequest request, StreamObserver<Catalogue> responseObserver) {
-    responseObserver.onNext(catalogueServiceUtil.createCatalogueService(converter.toCatalogue(request)).toProto());
+  public void createCatalogue(CreateCatalogueRequest request,
+                              StreamObserver<Catalogue> responseObserver) {
+    responseObserver.onNext(catalogueServiceUtil
+            .createCatalogueService(converter.toCatalogue(request)).toProto());
     responseObserver.onCompleted();
   }
 

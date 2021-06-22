@@ -106,14 +106,18 @@ dependencies {
 	checkstyleConfig("com.puppycrawl.tools:checkstyle:8.29") { transitive = false }
 }
 
+checkstyle {
+	toolVersion '8.29'
+	config = resources.text.fromArchiveEntry(configurations.checkstyleConfig, 'google_checks.xml')
+	ignoreFailures = false
+}
+
 //checkstyle {
-//	toolVersion '8.29'
-//	config = resources.text.fromArchiveEntry(configurations.checkstyleConfig, 'google_checks.xml')
-//	ignoreFailures = true
+//    configFile = file("${rootDir}/config/checkstyle/checkstyle.xml")
 //}
 
-checkstyle {
-    configFile = file("${rootDir}/config/checkstyle/checkstyle.xml")
+checkstyleMain {
+	source = fileTree('src/main/java')
 }
 
 tasks.withType(Pmd){
@@ -127,6 +131,6 @@ pmd {
 	toolVersion = '6.30.0'
 	ruleSets = []
 	ruleSetFiles = files("$rootDir/config/pmd/pmd-rules.xml")
-	ignoreFailures = true
+	ignoreFailures = false
 }
 

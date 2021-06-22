@@ -28,8 +28,10 @@ public class GRPCClient {
 
 
   private void createUser(String userName) {
-    User user = User.newBuilder().setUserId(UUID.randomUUID().toString()).setUsername(userName).build();
-    CreateUserRequest request = CreateUserRequest.newBuilder().setUser(user).build();
+    User user = User.newBuilder()
+            .setUserId(UUID.randomUUID().toString()).setUsername(userName).build();
+    CreateUserRequest request = CreateUserRequest.newBuilder()
+            .setUser(user).build();
     User response = stub.createUser(request);
     System.out.println("Response: " + response.toString());
   }
@@ -216,30 +218,31 @@ public class GRPCClient {
 
   public static void main(String[] args) {
     GRPCClient client = new GRPCClient();
-    //client.createUser("Partner X");
-    //    client.deleteUser("ae38f97c-5532-48e7-89ee-d6f70aad752a");
-    //    client.getUser("00ed1cba-b9f2-46fc-b662-4ff30955f470");
-    //    client.getUserStream();
-
-    //    client.createCatalogue("3660ada0-f532-44f5-b28c-1ca573fc970b",
-    //            "Books","This catalogue contains the books");
-
-    //    client.deleteCatalogue("c7fd4585-8c5f-4c88-9197-eb4f97c491bd");
-
-    //    client.getCatalogue("142e7a2b-a847-4e81-b7eb-014ee52efe64");
-    //    client.getCatalogueStream2();
-
-    //    client.createItem("Note Book",BigDecimal.valueOf(40.50),2,Type.RAW,
-    //            "f7794a0b-8a34-449b-a5b1-af3609aa31c6");
-
-    //    client.createItemStream();
-
-    //    client.deleteItem("99eaf317-c27a-43d2-957f-8ad11d8e2a38");
-
-        client.getItem("8c0e7de8-1156-41f2-b582-d756785927dd","f7794a0b-8a34-449b-a5b1-af3609aa31c6");
-
-    //    client.getItemStream1();
-    //    client.getItemStream2();
-    //    client.getItemStream3();
+//    client.createUser("Partner X");
+//    client.deleteUser("ae38f97c-5532-48e7-89ee-d6f70aad752a");
+//    client.getUser("00ed1cba-b9f2-46fc-b662-4ff30955f470");
+//    client.getUserStream();
+//
+//    client.createCatalogue("3660ada0-f532-44f5-b28c-1ca573fc970b",
+//            "Books","This catalogue contains the books");
+//
+//    client.deleteCatalogue("c7fd4585-8c5f-4c88-9197-eb4f97c491bd");
+//
+//    client.getCatalogue("142e7a2b-a847-4e81-b7eb-014ee52efe64");
+//    client.getCatalogueStream2();
+//
+//    client.createItem("Note Book",BigDecimal.valueOf(40.50),2,Type.RAW,
+//            "f7794a0b-8a34-449b-a5b1-af3609aa31c6");
+//
+//    client.createItemStream();
+//
+//    client.deleteItem("99eaf317-c27a-43d2-957f-8ad11d8e2a38");
+//
+//    client.getItem("8c0e7de8-1156-41f2-b582-d756785927dd",
+//            "f7794a0b-8a34-449b-a5b1-af3609aa31c6");
+//
+//    client.getItemStream1();
+//    client.getItemStream2();
+//    client.getItemStream3();
   }
 }

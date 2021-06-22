@@ -19,7 +19,8 @@ public class Item {
   public Item() {
   }
 
-  public Item(String name, BigDecimal price, int quantity, String type, String itemId, String catalogueId) {
+  public Item(String name, BigDecimal price, int quantity,
+              String type, String itemId, String catalogueId) {
     this.itemId = itemId;
     this.catalogueId = catalogueId;
     this.name = name;
