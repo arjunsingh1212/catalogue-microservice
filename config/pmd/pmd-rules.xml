@@ -28,6 +28,7 @@
 
     <rule ref="category/java/documentation.xml">
         <exclude name="CommentSize"/>
+        <exclude name="CommentRequired"/>
     </rule>
 
 

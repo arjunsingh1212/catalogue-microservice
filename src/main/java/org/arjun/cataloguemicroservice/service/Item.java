@@ -1,24 +1,26 @@
 package org.arjun.cataloguemicroservice.service;
 
 import java.util.List;
-import java.util.Optional;
 
 public interface Item {
 
   org.arjun.cataloguemicroservice.entity.Item
-      createItemService(org.arjun.cataloguemicroservice.entity.Item item);
+      createItemService(final org.arjun.cataloguemicroservice.entity.Item item);
 
-  void deleteItemService(String itemId);
+  void deleteItemService(final String itemId);
 
   org.arjun.cataloguemicroservice.entity.Item
-      getItemService(String itemId,String parentCatalogueId);
+      getItemService(final String itemId,final String parentCatalogueId);
 
   List<org.arjun.cataloguemicroservice.entity.Item>
-      getItemStreamByCatalogueId(String catalogueId);
+      getItemStreamByCatalogueId(final String catalogueId);
 
   List<org.arjun.cataloguemicroservice.entity.Item>
-      getItemStreamByUserId(String userId);
+      getItemStreamByUserId(final String userId);
 
   List<org.arjun.cataloguemicroservice.entity.Item>
       getItemStreamAll();
+
+  org.arjun.cataloguemicroservice.Item toProto(
+          final org.arjun.cataloguemicroservice.entity.Item item);
 }

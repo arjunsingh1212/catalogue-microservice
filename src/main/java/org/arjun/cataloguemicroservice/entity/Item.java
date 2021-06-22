@@ -1,6 +1,5 @@
 package org.arjun.cataloguemicroservice.entity;
 
-
 import java.math.BigDecimal;
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -19,8 +18,8 @@ public class Item {
   public Item() {
   }
 
-  public Item(String name, BigDecimal price, int quantity,
-              String type, String itemId, String catalogueId) {
+  public Item(final String name, final BigDecimal price, final int quantity,
+              final String type, final String itemId, final String catalogueId) {
     this.itemId = itemId;
     this.catalogueId = catalogueId;
     this.name = name;
@@ -33,7 +32,7 @@ public class Item {
     return itemId;
   }
 
-  public void setItemId(String itemId) {
+  public void setItemId(final String itemId) {
     this.itemId = itemId;
   }
 
@@ -41,7 +40,7 @@ public class Item {
     return catalogueId;
   }
 
-  public void setCatalogueId(String catalogueId) {
+  public void setCatalogueId(final String catalogueId) {
     this.catalogueId = catalogueId;
   }
 
@@ -49,7 +48,7 @@ public class Item {
     return name;
   }
 
-  public void setName(String name) {
+  public void setName(final String name) {
     this.name = name;
   }
 
@@ -57,7 +56,7 @@ public class Item {
     return price;
   }
 
-  public void setPrice(BigDecimal price) {
+  public void setPrice(final BigDecimal price) {
     this.price = price;
   }
 
@@ -65,7 +64,7 @@ public class Item {
     return quantity;
   }
 
-  public void setQuantity(int quantity) {
+  public void setQuantity(final int quantity) {
     this.quantity = quantity;
   }
 
@@ -73,7 +72,7 @@ public class Item {
     return type;
   }
 
-  public void setType(String type) {
+  public void setType(final String type) {
     this.type = type;
   }
 
@@ -83,29 +82,4 @@ public class Item {
             + catalogueId + '}';
   }
 
-  public org.arjun.cataloguemicroservice.Item toProto() {
-
-    org.arjun.cataloguemicroservice.Item.Type type;
-    switch (getType()) {
-      case "RAW":
-        type = org.arjun.cataloguemicroservice.Item.Type.RAW;
-        break;
-
-      case "MANUFACTURED":
-        type = org.arjun.cataloguemicroservice.Item.Type.MANUFACTURED;
-        break;
-
-      case "IMPORTED":
-        type = org.arjun.cataloguemicroservice.Item.Type.IMPORTED;
-        break;
-
-      default:
-        type = org.arjun.cataloguemicroservice.Item.Type.TYPE_UNSPECIFIED;
-        break;
-    }
-    return org.arjun.cataloguemicroservice.Item.newBuilder()
-            .setItemId(getItemId()).setCatalogueId(getCatalogueId()).setName(getName())
-            .setPrice(Double.parseDouble(getPrice().toString())).setQuantity(getQuantity())
-            .setType(type).build();
-  }
 }

@@ -10,150 +10,163 @@ import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.arjun.assignment1.Type;
 import org.arjun.cataloguemicroservice.*;
 
+@SuppressWarnings({"PMD.GuardLogStatement",
+        "PMD.UnusedPrivateMethod","LinguisticNaming"})
 public class GRPCClient {
 
-  ManagedChannel channel =
+  private final Logger logger =
+          LogManager.getLogger(GRPCClient.class);
+
+  private final ManagedChannel channel =
           ManagedChannelBuilder.forAddress(
                   "localhost", 6565).usePlaintext().build();
-  UserServiceGrpc.UserServiceBlockingStub stub = UserServiceGrpc.newBlockingStub(channel);
-  CatalogueServiceGrpc.CatalogueServiceBlockingStub stubCatalogue =
+  private final UserServiceGrpc.UserServiceBlockingStub stub =
+          UserServiceGrpc.newBlockingStub(channel);
+  private final CatalogueServiceGrpc.CatalogueServiceBlockingStub stubCatalogue =
           CatalogueServiceGrpc.newBlockingStub(channel);
-  ItemServiceGrpc.ItemServiceBlockingStub stubItem =
+  private final ItemServiceGrpc.ItemServiceBlockingStub stubItem =
           ItemServiceGrpc.newBlockingStub(channel);
-  ItemServiceGrpc.ItemServiceStub asyncStubItem =
+  private final ItemServiceGrpc.ItemServiceStub asyncStubItem =
           ItemServiceGrpc.newStub(channel);
 
 
-  private void createUser(String userName) {
-    User user = User.newBuilder()
+  private void createUser(final String userName) {
+    final User user = User.newBuilder()
             .setUserId(UUID.randomUUID().toString()).setUsername(userName).build();
-    CreateUserRequest request = CreateUserRequest.newBuilder()
+    final CreateUserRequest request = CreateUserRequest.newBuilder()
             .setUser(user).build();
-    User response = stub.createUser(request);
-    System.out.println("Response: " + response.toString());
+    final User response = stub.createUser(request);
+    if (logger.isInfoEnabled()) {
+      logger.info("Response: " + response.toString());
+    }
   }
 
-  private void deleteUser(String userId) {
-    DeleteUserRequest request = DeleteUserRequest.newBuilder().setUserId(userId).build();
-    Empty response = stub.deleteUser(request);
-    System.out.println("Response: " + response.toString());
+  private void deleteUser(final String userId) {
+    final DeleteUserRequest request = DeleteUserRequest.newBuilder().setUserId(userId).build();
+    final Empty response = stub.deleteUser(request);
+    logger.info("Response: " + response.toString());
   }
 
-  private void getUser(String userId) {
-    GetUserRequest request = GetUserRequest.newBuilder().setUserId(userId).build();
-    User response = stub.getUser(request);
-    System.out.println("Response: " + response.toString());
+  private void getUser(final String userId) {
+    final GetUserRequest request = GetUserRequest.newBuilder().setUserId(userId).build();
+    final User response = stub.getUser(request);
+    logger.info("Response: " + response.toString());
   }
 
   private void getUserStream() {
-    GetUserStreamRequest request = GetUserStreamRequest.newBuilder().setAll(true).build();
+    final GetUserStreamRequest request = GetUserStreamRequest.newBuilder()
+            .setAll(true).build();
     stub.getUserStream(request).forEachRemaining(e -> {
-      System.out.println("Response: " + e.toString());
+      logger.info("Response: " + e.toString());
     });
   }
 
-  private void createCatalogue(String userId, String catalogueName, String desc) {
-    Catalogue catalogue = Catalogue.newBuilder()
+  private void createCatalogue(
+          final String userId, final String catalogueName, final String desc) {
+    final Catalogue catalogue = Catalogue.newBuilder()
             .setCatalogueId(UUID.randomUUID().toString())
             .setUserId(userId)
             .setCatalogueName(catalogueName)
             .setDescription(desc).build();
-    CreateCatalogueRequest request =
-            CreateCatalogueRequest.newBuilder().setCatalogue(catalogue).build();
-    Catalogue response = stubCatalogue.createCatalogue(request);
-    System.out.println("Response: " + response.toString());
+    final CreateCatalogueRequest request = CreateCatalogueRequest.newBuilder()
+            .setCatalogue(catalogue).build();
+    final Catalogue response = stubCatalogue.createCatalogue(request);
+    logger.info("Response: " + response.toString());
   }
 
-  private void deleteCatalogue(String catalogueId) {
-    DeleteCatalogueRequest request =
-            DeleteCatalogueRequest.newBuilder().setCatalogueId(catalogueId).build();
-    Empty response = stubCatalogue.deleteCatalogue(request);
-    System.out.println("Response: " + response.toString());
+  private void deleteCatalogue(final String catalogueId) {
+    final DeleteCatalogueRequest request = DeleteCatalogueRequest.newBuilder()
+            .setCatalogueId(catalogueId).build();
+    final Empty response = stubCatalogue.deleteCatalogue(request);
+    logger.info("Response: " + response.toString());
   }
 
-  private void getCatalogue(String catalogueId) {
-    GetCatalogueRequest request =
-            GetCatalogueRequest.newBuilder().setCatalogueId(catalogueId).build();
-    Catalogue response = stubCatalogue.getCatalogue(request);
-    System.out.println("Response: " + response.toString());
+  private void getCatalogue(final String catalogueId) {
+    final GetCatalogueRequest request = GetCatalogueRequest.newBuilder()
+            .setCatalogueId(catalogueId).build();
+    final Catalogue response = stubCatalogue.getCatalogue(request);
+    logger.info("Response: " + response.toString());
   }
 
   private void getCatalogueStream1() {
-    GetCatalogueStreamRequest request = GetCatalogueStreamRequest.newBuilder()
+    final GetCatalogueStreamRequest request = GetCatalogueStreamRequest.newBuilder()
             .setUserId("3660ada0-f532-44f5-b28c-1ca573fc970b").build();
     stubCatalogue.getCatalogueStream(request).forEachRemaining(e -> {
-      System.out.println("Response: " + e.toString());
+      logger.info("Response: " + e.toString());
     });
   }
 
   private void getCatalogueStream2() {
-    GetCatalogueStreamRequest request = GetCatalogueStreamRequest.newBuilder()
+    final GetCatalogueStreamRequest request = GetCatalogueStreamRequest.newBuilder()
             .setAll(true).build();
     stubCatalogue.getCatalogueStream(request).forEachRemaining(e -> {
-      System.out.println("Response: " + e.toString());
+      logger.info("Response: " + e.toString());
     });
   }
 
-  private void createItem(String name, BigDecimal price,
-                          int quantity, Type type, String catalogueId) {
-    Item item = Item.newBuilder()
+  private void createItem(final String name, final BigDecimal price,
+                          final int quantity, final Type type,
+                          final String catalogueId) {
+    final Item item = Item.newBuilder()
             .setItemId(UUID.randomUUID().toString())
             .setCatalogueId(catalogueId)
             .setName(name)
             .setPrice(price.doubleValue())
             .setQuantity(quantity)
             .setType(Item.Type.valueOf(type.toString())).build();
-    CreateItemRequest request = CreateItemRequest.newBuilder().setItem(item).build();
-    Item response = stubItem.createItem(request);
-    System.out.println("Response: " + response.toString());
+    final CreateItemRequest request = CreateItemRequest.newBuilder().setItem(item).build();
+    final Item response = stubItem.createItem(request);
+    logger.info("Response: " + response.toString());
   }
 
   private void createItemStream() {
-    List<CreateItemStreamRequest> itemStream = new ArrayList<>();
+    final List<CreateItemStreamRequest> itemStream = new ArrayList<>();
     //Fill in the Array
-    Item item1 = Item.newBuilder()
+    final Item item1 = Item.newBuilder()
             .setItemId(UUID.randomUUID().toString())
             .setCatalogueId("f7794a0b-8a34-449b-a5b1-af3609aa31c6")
             .setName("Book")
             .setPrice(30.30)
             .setQuantity(3)
             .setType(Item.Type.valueOf("RAW")).build();
-    CreateItemStreamRequest request1 =
+    final CreateItemStreamRequest request1 =
             CreateItemStreamRequest.newBuilder().setItem(item1).build();
     itemStream.add(request1);
-    Item item2 = Item.newBuilder()
+    final Item item2 = Item.newBuilder()
             .setItemId(UUID.randomUUID().toString())
             .setCatalogueId("f7794a0b-8a34-449b-a5b1-af3609aa31c6")
             .setName("Pencil")
             .setPrice(5)
             .setQuantity(10)
             .setType(Item.Type.valueOf("IMPORTED")).build();
-    CreateItemStreamRequest request2 =
+    final CreateItemStreamRequest request2 =
             CreateItemStreamRequest.newBuilder().setItem(item2).build();
     itemStream.add(request2);
 
     // Latch
-    CountDownLatch latch = new CountDownLatch(1);
+    final CountDownLatch latch = new CountDownLatch(1);
 
-    StreamObserver<CreateItemStreamRequest> requestStreamObserver =
+    final StreamObserver<CreateItemStreamRequest> requestStreamObserver =
             asyncStubItem.createItemStream(new StreamObserver<CreateItemStreamResponse>() {
 
               @Override
-              public void onNext(CreateItemStreamResponse itemStreamResponse) {
-                System.out.println(itemStreamResponse.toString());
+              public void onNext(final CreateItemStreamResponse itemStreamResponse) {
+                logger.info(itemStreamResponse.toString());
               }
 
               @Override
-              public void onError(Throwable t) {
-                System.out.println("Error :" + t.getMessage());
+              public void onError(final Throwable t) {
+                logger.info("Error :" + t.getMessage());
               }
 
               @Override
               public void onCompleted() {
-                System.out.println("Finished");
+                logger.info("Finished");
                 latch.countDown();
               }
             });
@@ -168,56 +181,56 @@ public class GRPCClient {
     try {
       latch.await(10, TimeUnit.SECONDS);
     } catch (InterruptedException e) {
-      e.printStackTrace();
+      logger.info("Error :" + e.getMessage());
     }
   }
 
-  private void deleteItem(String itemId) {
-    DeleteItemRequest request =
+  private void deleteItem(final String itemId) {
+    final DeleteItemRequest request =
             DeleteItemRequest.newBuilder().setItemId(itemId).build();
     try {
-      Empty response = stubItem.deleteItem(request);
-      System.out.println("Response: " + response.toString());
+      final Empty response = stubItem.deleteItem(request);
+      logger.info("Response: " + response.toString());
     } catch (Exception e) {
-      System.out.println(e.getMessage());
+      logger.info(e.getMessage());
     }
   }
 
-  private void getItem(String itemId, String parentCatalogueId) {
-    GetItemRequest request = GetItemRequest.newBuilder()
+  private void getItem(final String itemId, final String parentCatalogueId) {
+    final GetItemRequest request = GetItemRequest.newBuilder()
             .setItemId(itemId)
             .setParentCatalogueId(parentCatalogueId).build();
-    Item response = stubItem.getItem(request);
-    System.out.println("Response: " + response.toString());
+    final Item response = stubItem.getItem(request);
+    logger.info("Response: " + response.toString());
   }
 
-  private void getItemStream1() {
-    GetItemStreamRequest request = GetItemStreamRequest.newBuilder()
-            .setUserId("3660ada0-f532-44f5-b28c-1ca573fc970b").build();
+  private void getItemStreamUsingUserId(final String userId) {
+    final GetItemStreamRequest request = GetItemStreamRequest.newBuilder()
+            .setUserId(userId).build();
     stubItem.getItemStream(request).forEachRemaining(e -> {
-      System.out.println("Response: " + e.toString());
+      logger.info("Response: " + e.toString());
     });
   }
 
-  private void getItemStream2() {
-    GetItemStreamRequest request = GetItemStreamRequest.newBuilder()
-            .setCatalogueId("f7794a0b-8a34-449b-a5b1-af3609aa31c6").build();
+  private void getItemStreamUsingCatalogueId(final String catalogueId) {
+    final GetItemStreamRequest request = GetItemStreamRequest.newBuilder()
+            .setCatalogueId(catalogueId).build();
     stubItem.getItemStream(request).forEachRemaining(e -> {
-      System.out.println("Response: " + e.toString());
+      logger.info("Response: " + e.toString());
     });
   }
 
-  private void getItemStream3() {
-    GetItemStreamRequest request = GetItemStreamRequest.newBuilder()
+  private void getItemStreamAll() {
+    final GetItemStreamRequest request = GetItemStreamRequest.newBuilder()
             .setAll(true).build();
     stubItem.getItemStream(request).forEachRemaining(e -> {
-      System.out.println("Response: " + e.toString());
+      logger.info("Response: " + e.toString());
     });
   }
 
 
-  public static void main(String[] args) {
-    GRPCClient client = new GRPCClient();
+  public static void main(final String[] args) {
+    final GRPCClient client = new GRPCClient();
 //    client.createUser("Partner X");
 //    client.deleteUser("ae38f97c-5532-48e7-89ee-d6f70aad752a");
 //    client.getUser("00ed1cba-b9f2-46fc-b662-4ff30955f470");
@@ -241,8 +254,8 @@ public class GRPCClient {
 //    client.getItem("8c0e7de8-1156-41f2-b582-d756785927dd",
 //            "f7794a0b-8a34-449b-a5b1-af3609aa31c6");
 //
-//    client.getItemStream1();
-//    client.getItemStream2();
-//    client.getItemStream3();
+//    client.getItemStreamUsingUserId("3660ada0-f532-44f5-b28c-1ca573fc970b");
+//    client.getItemStreamUsingCatalogueId("f7794a0b-8a34-449b-a5b1-af3609aa31c6");
+//    client.getItemStreamAll();
   }
 }

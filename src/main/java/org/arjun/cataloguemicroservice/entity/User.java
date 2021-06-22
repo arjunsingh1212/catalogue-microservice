@@ -17,7 +17,7 @@ public class User {
   public User() {
   }
 
-  public User(String uid, String uname) {
+  public User(final String uid, final String uname) {
     this.userId = uid;
     this.userName = uname;
   }
@@ -26,7 +26,7 @@ public class User {
     return userId;
   }
 
-  public void setUserId(String userId) {
+  public void setUserId(final String userId) {
     this.userId = userId;
   }
 
@@ -34,7 +34,7 @@ public class User {
     return userName;
   }
 
-  public void setUserName(String userName) {
+  public void setUserName(final String userName) {
     this.userName = userName;
   }
 
@@ -44,11 +44,6 @@ public class User {
             + "uid=" + userId
             + ", uname='" + userName + '\''
             + '}';
-  }
-
-  public org.arjun.cataloguemicroservice.User toProto() {
-    return org.arjun.cataloguemicroservice.User.newBuilder()
-            .setUserId(getUserId()).setUsername(getUserName()).build();
   }
 
 

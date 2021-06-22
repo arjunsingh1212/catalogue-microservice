@@ -2,7 +2,6 @@ package org.arjun.cataloguemicroservice.server;
 
 import com.google.protobuf.Empty;
 import io.grpc.stub.StreamObserver;
-import java.util.Optional;
 import org.arjun.cataloguemicroservice.*;
 import org.arjun.cataloguemicroservice.repository.CatalogueRepo;
 import org.arjun.cataloguemicroservice.repository.ItemRepo;
@@ -77,7 +76,7 @@ public class ItemService extends ItemServiceGrpc.ItemServiceImplBase {
   public void getItem(GetItemRequest request, StreamObserver<Item> responseObserver) {
     org.arjun.cataloguemicroservice.entity.Item item =
             itemServiceUtil.getItemService(request.getItemId(),request.getParentCatalogueId());
-    responseObserver.onNext(item.toProto());
+    responseObserver.onNext(itemServiceUtil.toProto(item));
     responseObserver.onCompleted();
   }
 
@@ -86,17 +85,17 @@ public class ItemService extends ItemServiceGrpc.ItemServiceImplBase {
                             StreamObserver<ItemStream> responseObserver) {
     if (!request.getCatalogueId().isBlank()) {
       itemServiceUtil.getItemStreamByCatalogueId(request.getCatalogueId()).forEach(e -> {
-        responseObserver.onNext(ItemStream.newBuilder().setItem(e.toProto()).build());
+        responseObserver.onNext(ItemStream.newBuilder().setItem(itemServiceUtil.toProto(e)).build());
       });
       responseObserver.onCompleted();
     } else if (!request.getUserId().isBlank()) {
       itemServiceUtil.getItemStreamByUserId(request.getUserId()).forEach(ele -> {
-        responseObserver.onNext(ItemStream.newBuilder().setItem(ele.toProto()).build());
+        responseObserver.onNext(ItemStream.newBuilder().setItem(itemServiceUtil.toProto(ele)).build());
       });
       responseObserver.onCompleted();
     } else {
       itemServiceUtil.getItemStreamAll().forEach(ele -> {
-        responseObserver.onNext(ItemStream.newBuilder().setItem(ele.toProto()).build());
+        responseObserver.onNext(ItemStream.newBuilder().setItem(itemServiceUtil.toProto(ele)).build());
       });
       responseObserver.onCompleted();
     }

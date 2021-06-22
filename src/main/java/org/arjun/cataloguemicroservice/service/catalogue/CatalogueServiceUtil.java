@@ -15,23 +15,35 @@ public class CatalogueServiceUtil
   @Autowired
   CatalogueRepo catalogueRepo;
 
-  public Catalogue createCatalogueService(Catalogue catalogue) {
+  @Override
+  public Catalogue createCatalogueService(final Catalogue catalogue) {
     return catalogueRepo.save(catalogue);
   }
 
-  public void deleteCatalogueService(String catalogueId) {
+  @Override
+  public void deleteCatalogueService(final String catalogueId) {
     catalogueRepo.deleteById(catalogueId);
   }
 
-  public Optional<Catalogue> getCatalogueService(String catalogueId) {
+  @Override
+  public Optional<Catalogue> getCatalogueService(final String catalogueId) {
     return catalogueRepo.findById(catalogueId);
   }
 
-  public List<Catalogue> getCatalogueStreamByUserId(String userId) {
+  @Override
+  public List<Catalogue> getCatalogueStreamByUserId(final String userId) {
     return catalogueRepo.findByUserId(userId);
   }
 
+  @Override
   public List<Catalogue> getCatalogueStreamAll() {
     return catalogueRepo.findAll();
+  }
+
+  @Override
+  public org.arjun.cataloguemicroservice.Catalogue toProto(final Catalogue catalogue) {
+    return org.arjun.cataloguemicroservice.Catalogue.newBuilder()
+            .setUserId(catalogue.getUserId()).setCatalogueName(catalogue.getCatalogueName())
+            .setDescription(catalogue.getDescription()).setCatalogueId(catalogue.getCatalogueId()).build();
   }
 }

@@ -13,22 +13,22 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class Converter {
-  public User toUser(CreateUserRequest request) {
-    return new org.arjun.cataloguemicroservice.entity.User(
+  public User toUser(final CreateUserRequest request) {
+    return new User(
                     request.getUser().getUserId(),
                     request.getUser().getUsername());
   }
 
-  public Catalogue toCatalogue(CreateCatalogueRequest request) {
-    return new org.arjun.cataloguemicroservice.entity.Catalogue(
+  public Catalogue toCatalogue(final CreateCatalogueRequest request) {
+    return new Catalogue(
                     request.getCatalogue().getCatalogueId(),
                     request.getCatalogue().getUserId(),
                     request.getCatalogue().getCatalogueName(),
                     request.getCatalogue().getDescription());
   }
 
-  public Item toItem(CreateItemRequest request) {
-    return new org.arjun.cataloguemicroservice.entity.Item(
+  public Item toItem(final CreateItemRequest request) {
+    return new Item(
             request.getItem().getName(),
             BigDecimal.valueOf(request.getItem().getPrice()),
             request.getItem().getQuantity(),
@@ -37,7 +37,7 @@ public class Converter {
             request.getItem().getCatalogueId());
   }
 
-  public CreateItemRequest convertToCreateItemRequest(CreateItemStreamRequest request) {
+  public CreateItemRequest convertToCreateItemRequest(final CreateItemStreamRequest request) {
     return CreateItemRequest.newBuilder().setItem(request.getItem()).build();
   }
 }

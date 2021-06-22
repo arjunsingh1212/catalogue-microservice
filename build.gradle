@@ -109,7 +109,8 @@ dependencies {
 checkstyle {
 	toolVersion '8.29'
 	config = resources.text.fromArchiveEntry(configurations.checkstyleConfig, 'google_checks.xml')
-	ignoreFailures = false
+	ignoreFailures = true
+	maxWarnings(20)
 }
 
 //checkstyle {
@@ -131,6 +132,6 @@ pmd {
 	toolVersion = '6.30.0'
 	ruleSets = []
 	ruleSetFiles = files("$rootDir/config/pmd/pmd-rules.xml")
-	ignoreFailures = false
+	ignoreFailures = true
 }
 

@@ -28,8 +28,8 @@ public class CatalogueService extends CatalogueServiceGrpc.CatalogueServiceImplB
   @Override
   public void createCatalogue(CreateCatalogueRequest request,
                               StreamObserver<Catalogue> responseObserver) {
-    responseObserver.onNext(catalogueServiceUtil
-            .createCatalogueService(converter.toCatalogue(request)).toProto());
+    responseObserver.onNext(catalogueServiceUtil.toProto(catalogueServiceUtil
+            .createCatalogueService(converter.toCatalogue(request))));
     responseObserver.onCompleted();
   }
 
@@ -46,7 +46,7 @@ public class CatalogueService extends CatalogueServiceGrpc.CatalogueServiceImplB
                            StreamObserver<Catalogue> responseObserver) {
     Optional<org.arjun.cataloguemicroservice.entity.Catalogue> entry =
             catalogueServiceUtil.getCatalogueService(request.getCatalogueId());
-    entry.map(e -> e.toProto())
+    entry.map(e -> catalogueServiceUtil.toProto(e))
             .ifPresent(responseObserver::onNext);
     responseObserver.onCompleted();
   }
@@ -58,13 +58,13 @@ public class CatalogueService extends CatalogueServiceGrpc.CatalogueServiceImplB
       catalogueServiceUtil.getCatalogueStreamByUserId(request.getUserId())
               .forEach(ele -> {
                 responseObserver.onNext(CatalogueStream.newBuilder()
-                        .setCatalogue(ele.toProto()).build());
+                        .setCatalogue(catalogueServiceUtil.toProto(ele)).build());
               });
       responseObserver.onCompleted();
     } else {
       catalogueServiceUtil.getCatalogueStreamAll().forEach(ele -> {
         responseObserver.onNext(CatalogueStream.newBuilder()
-                .setCatalogue(ele.toProto()).build());
+                .setCatalogue(catalogueServiceUtil.toProto(ele)).build());
       });
       responseObserver.onCompleted();
     }

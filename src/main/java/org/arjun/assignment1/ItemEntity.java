@@ -1,7 +1,6 @@
 package org.arjun.assignment1;
 
 import java.math.BigDecimal;
-import org.arjun.assignment1.Type;
 
 /**
  * Class as blueprint for Item Entity.

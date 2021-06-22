@@ -8,5 +8,5 @@ import org.springframework.stereotype.Component;
 @Component
 public interface CatalogueRepo extends JpaRepository<Catalogue, String> {
 
-  List<Catalogue> findByUserId(String userId);
+  List<Catalogue> findByUserId(final String userId);
 }

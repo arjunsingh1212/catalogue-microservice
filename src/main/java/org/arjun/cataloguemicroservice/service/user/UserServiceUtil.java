@@ -15,19 +15,29 @@ public class UserServiceUtil implements
   @Autowired
   UserRepo userRepo;
 
-  public User createUserService(User userInstance) {
+  @Override
+  public User createUserService(final User userInstance) {
     return userRepo.save(userInstance);
   }
 
-  public void deleteUserService(String userId) {
+  @Override
+  public void deleteUserService(final String userId) {
     userRepo.deleteById(userId);
   }
 
-  public Optional<User> getUserService(String userId) {
+  @Override
+  public Optional<User> getUserService(final String userId) {
     return userRepo.findById(userId);
   }
 
+  @Override
   public List<User> getUserStreamService() {
     return userRepo.findAll();
+  }
+
+  @Override
+  public org.arjun.cataloguemicroservice.User toProto(final User user) {
+    return org.arjun.cataloguemicroservice.User.newBuilder()
+            .setUserId(user.getUserId()).setUsername(user.getUserName()).build();
   }
 }

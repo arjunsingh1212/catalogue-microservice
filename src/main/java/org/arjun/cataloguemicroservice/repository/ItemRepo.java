@@ -5,11 +5,10 @@ import org.arjun.cataloguemicroservice.entity.Item;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Component;
 
-
 @Component
 public interface ItemRepo extends JpaRepository<Item, String> {
 
-  List<Item> findByCatalogueId(String catalogueId);
+  List<Item> findByCatalogueId(final String catalogueId);
 
-  Item findByItemIdAndCatalogueId(String itemId, String parentCatalogueId);
+  Item findByItemIdAndCatalogueId(final String itemId, final String parentCatalogueId);
 }

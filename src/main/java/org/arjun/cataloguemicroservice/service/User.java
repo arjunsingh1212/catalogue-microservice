@@ -5,13 +5,16 @@ import java.util.Optional;
 
 public interface User {
   org.arjun.cataloguemicroservice.entity.User
-      createUserService(org.arjun.cataloguemicroservice.entity.User userInstance);
+      createUserService(final org.arjun.cataloguemicroservice.entity.User userInstance);
 
-  void deleteUserService(String userId);
+  void deleteUserService(final String userId);
 
   Optional<org.arjun.cataloguemicroservice.entity.User>
-      getUserService(String userId);
+      getUserService(final String userId);
 
   List<org.arjun.cataloguemicroservice.entity.User>
       getUserStreamService();
+
+  org.arjun.cataloguemicroservice.User toProto(
+          final org.arjun.cataloguemicroservice.entity.User user);
 }

@@ -1,662 +1,639 @@
 - file_path: catalogue.proto
   problems:
-  - message: Resource messages should include a `google.api.resource` annotation.
+  - message: The `user` field should include `(google.api.field_behavior) = REQUIRED`.
     location:
       start_position:
-        line_number: 99
-        column_number: 1
-      end_position:
-        line_number: 123
-        column_number: 1
-    rule_id: core::0123::resource-annotation
-    rule_doc_uri: https://linter.aip.dev/123/resource-annotation
-  - message: The `parent` field should include `(google.api.field_behavior) = REQUIRED`.
-    location:
-      start_position:
-        line_number: 146
+        line_number: 67
         column_number: 3
       end_position:
-        line_number: 146
-        column_number: 20
-    rule_id: core::0133::request-parent-behavior
-    rule_doc_uri: https://linter.aip.dev/133/request-parent-behavior
-  - message: The `parent` field should include `(google.api.field_behavior) = REQUIRED`.
-    location:
-      start_position:
-        line_number: 154
-        column_number: 3
-      end_position:
-        line_number: 154
-        column_number: 20
-    rule_id: core::0133::request-parent-behavior
-    rule_doc_uri: https://linter.aip.dev/133/request-parent-behavior
-  - message: The `parent` field should include `(google.api.field_behavior) = REQUIRED`.
-    location:
-      start_position:
-        line_number: 197
-        column_number: 3
-      end_position:
-        line_number: 197
-        column_number: 20
-    rule_id: core::0133::request-parent-behavior
-    rule_doc_uri: https://linter.aip.dev/133/request-parent-behavior
-  - message: The `parent` field should include `(google.api.field_behavior) = REQUIRED`.
-    location:
-      start_position:
-        line_number: 227
-        column_number: 3
-      end_position:
-        line_number: 227
-        column_number: 20
-    rule_id: core::0133::request-parent-behavior
-    rule_doc_uri: https://linter.aip.dev/133/request-parent-behavior
-  - message: The `name` field should include a `google.api.resource_reference` annotation.
-    location:
-      start_position:
-        line_number: 174
-        column_number: 3
-      end_position:
-        line_number: 174
-        column_number: 18
-    rule_id: core::0131::request-name-reference
-    rule_doc_uri: https://linter.aip.dev/131/request-name-reference
-  - message: The `name` field should include a `google.api.resource_reference` annotation.
-    location:
-      start_position:
-        line_number: 184
-        column_number: 3
-      end_position:
-        line_number: 184
-        column_number: 18
-    rule_id: core::0131::request-name-reference
-    rule_doc_uri: https://linter.aip.dev/131/request-name-reference
-  - message: The `name` field should include a `google.api.resource_reference` annotation.
-    location:
-      start_position:
-        line_number: 191
-        column_number: 3
-      end_position:
-        line_number: 191
-        column_number: 18
-    rule_id: core::0131::request-name-reference
-    rule_doc_uri: https://linter.aip.dev/131/request-name-reference
-  - message: The `name` field should include a `google.api.resource_reference` annotation.
-    location:
-      start_position:
-        line_number: 211
-        column_number: 3
-      end_position:
-        line_number: 211
-        column_number: 18
-    rule_id: core::0131::request-name-reference
-    rule_doc_uri: https://linter.aip.dev/131/request-name-reference
-  - message: The `name` field should include a `google.api.resource_reference` annotation.
-    location:
-      start_position:
-        line_number: 221
-        column_number: 3
-      end_position:
-        line_number: 221
-        column_number: 18
-    rule_id: core::0131::request-name-reference
-    rule_doc_uri: https://linter.aip.dev/131/request-name-reference
-  - message: The `name` field should include a `google.api.resource_reference` annotation.
-    location:
-      start_position:
-        line_number: 241
-        column_number: 3
-      end_position:
-        line_number: 241
-        column_number: 18
-    rule_id: core::0131::request-name-reference
-    rule_doc_uri: https://linter.aip.dev/131/request-name-reference
-  - message: Method "GetUsersRequest" has no `name` field
-    location:
-      start_position:
-        line_number: 61
-        column_number: 1
-      end_position:
-        line_number: 62
-        column_number: 1
-    rule_id: core::0131::request-name-required
-    rule_doc_uri: https://linter.aip.dev/131/request-name-required
-  - message: Method "GetItemsRequest" has no `name` field
-    location:
-      start_position:
-        line_number: 178
-        column_number: 1
-      end_position:
-        line_number: 179
-        column_number: 1
-    rule_id: core::0131::request-name-required
-    rule_doc_uri: https://linter.aip.dev/131/request-name-required
-  - message: Method "GetCataloguesRequest" has no `name` field
-    location:
-      start_position:
-        line_number: 215
-        column_number: 1
-      end_position:
-        line_number: 216
-        column_number: 1
-    rule_id: core::0131::request-name-required
-    rule_doc_uri: https://linter.aip.dev/131/request-name-required
-  - message: Get methods should include `(google.api.method_signature) = "name"`
-    location:
-      start_position:
-        line_number: 20
-        column_number: 3
-      end_position:
-        line_number: 20
-        column_number: 45
-    rule_id: core::0131::method-signature
-    rule_doc_uri: https://linter.aip.dev/131/method-signature
-  - message: Get methods should include `(google.api.method_signature) = "name"`
-    location:
-      start_position:
-        line_number: 22
-        column_number: 3
-      end_position:
-        line_number: 22
-        column_number: 55
-    rule_id: core::0131::method-signature
-    rule_doc_uri: https://linter.aip.dev/131/method-signature
-  - message: Get methods should include `(google.api.method_signature) = "name"`
-    location:
-      start_position:
-        line_number: 24
-        column_number: 3
-      end_position:
-        line_number: 24
-        column_number: 82
-    rule_id: core::0131::method-signature
-    rule_doc_uri: https://linter.aip.dev/131/method-signature
-  - message: Get methods should include `(google.api.method_signature) = "name"`
-    location:
-      start_position:
-        line_number: 26
-        column_number: 3
-      end_position:
-        line_number: 26
-        column_number: 67
-    rule_id: core::0131::method-signature
-    rule_doc_uri: https://linter.aip.dev/131/method-signature
-  - message: Get methods should include `(google.api.method_signature) = "name"`
-    location:
-      start_position:
-        line_number: 38
-        column_number: 3
-      end_position:
-        line_number: 38
-        column_number: 70
-    rule_id: core::0131::method-signature
-    rule_doc_uri: https://linter.aip.dev/131/method-signature
-  - message: Get methods should include `(google.api.method_signature) = "name"`
-    location:
-      start_position:
-        line_number: 40
-        column_number: 3
-      end_position:
-        line_number: 40
-        column_number: 60
-    rule_id: core::0131::method-signature
-    rule_doc_uri: https://linter.aip.dev/131/method-signature
-  - message: Get methods should include `(google.api.method_signature) = "name"`
-    location:
-      start_position:
-        line_number: 42
-        column_number: 3
-      end_position:
-        line_number: 42
-        column_number: 82
-    rule_id: core::0131::method-signature
-    rule_doc_uri: https://linter.aip.dev/131/method-signature
-  - message: Get methods should include `(google.api.method_signature) = "name"`
-    location:
-      start_position:
-        line_number: 54
-        column_number: 3
-      end_position:
-        line_number: 54
-        column_number: 45
-    rule_id: core::0131::method-signature
-    rule_doc_uri: https://linter.aip.dev/131/method-signature
-  - message: Get methods should include `(google.api.method_signature) = "name"`
-    location:
-      start_position:
-        line_number: 56
-        column_number: 3
-      end_position:
-        line_number: 56
-        column_number: 55
-    rule_id: core::0131::method-signature
-    rule_doc_uri: https://linter.aip.dev/131/method-signature
-  - message: The `name` field should include a `google.api.resource_reference` annotation.
-    location:
-      start_position:
-        line_number: 168
-        column_number: 3
-      end_position:
-        line_number: 168
-        column_number: 18
-    rule_id: core::0135::request-name-reference
-    rule_doc_uri: https://linter.aip.dev/135/request-name-reference
-  - message: The `name` field should include a `google.api.resource_reference` annotation.
-    location:
-      start_position:
-        line_number: 205
-        column_number: 3
-      end_position:
-        line_number: 205
-        column_number: 18
-    rule_id: core::0135::request-name-reference
-    rule_doc_uri: https://linter.aip.dev/135/request-name-reference
-  - message: The `name` field should include a `google.api.resource_reference` annotation.
-    location:
-      start_position:
-        line_number: 235
-        column_number: 3
-      end_position:
-        line_number: 235
-        column_number: 18
-    rule_id: core::0135::request-name-reference
-    rule_doc_uri: https://linter.aip.dev/135/request-name-reference
-  - message: The `parent` field should include a `google.api.resource_reference` annotation.
-    location:
-      start_position:
-        line_number: 146
-        column_number: 3
-      end_position:
-        line_number: 146
-        column_number: 20
-    rule_id: core::0133::request-parent-reference
-    rule_doc_uri: https://linter.aip.dev/133/request-parent-reference
-  - message: The `parent` field should include a `google.api.resource_reference` annotation.
-    location:
-      start_position:
-        line_number: 154
-        column_number: 3
-      end_position:
-        line_number: 154
-        column_number: 20
-    rule_id: core::0133::request-parent-reference
-    rule_doc_uri: https://linter.aip.dev/133/request-parent-reference
-  - message: The `parent` field should include a `google.api.resource_reference` annotation.
-    location:
-      start_position:
-        line_number: 197
-        column_number: 3
-      end_position:
-        line_number: 197
-        column_number: 20
-    rule_id: core::0133::request-parent-reference
-    rule_doc_uri: https://linter.aip.dev/133/request-parent-reference
-  - message: The `parent` field should include a `google.api.resource_reference` annotation.
-    location:
-      start_position:
-        line_number: 227
-        column_number: 3
-      end_position:
-        line_number: 227
-        column_number: 20
-    rule_id: core::0133::request-parent-reference
-    rule_doc_uri: https://linter.aip.dev/133/request-parent-reference
-  - message: The `name` field should include `(google.api.field_behavior) = REQUIRED`.
-    location:
-      start_position:
-        line_number: 168
-        column_number: 3
-      end_position:
-        line_number: 168
-        column_number: 18
-    rule_id: core::0135::request-name-behavior
-    rule_doc_uri: https://linter.aip.dev/135/request-name-behavior
-  - message: The `name` field should include `(google.api.field_behavior) = REQUIRED`.
-    location:
-      start_position:
-        line_number: 205
-        column_number: 3
-      end_position:
-        line_number: 205
-        column_number: 18
-    rule_id: core::0135::request-name-behavior
-    rule_doc_uri: https://linter.aip.dev/135/request-name-behavior
-  - message: The `name` field should include `(google.api.field_behavior) = REQUIRED`.
-    location:
-      start_position:
-        line_number: 235
-        column_number: 3
-      end_position:
-        line_number: 235
-        column_number: 18
-    rule_id: core::0135::request-name-behavior
-    rule_doc_uri: https://linter.aip.dev/135/request-name-behavior
-  - message: RPCs must include HTTP definitions using the `google.api.http` annotation.
-    location:
-      start_position:
-        line_number: 11
-        column_number: 3
-      end_position:
-        line_number: 11
-        column_number: 51
-    rule_id: core::0127::http-annotation
-    rule_doc_uri: https://linter.aip.dev/127/http-annotation
-  - message: RPCs must include HTTP definitions using the `google.api.http` annotation.
-    location:
-      start_position:
-        line_number: 14
-        column_number: 3
-      end_position:
-        line_number: 14
-        column_number: 79
-    rule_id: core::0127::http-annotation
-    rule_doc_uri: https://linter.aip.dev/127/http-annotation
-  - message: RPCs must include HTTP definitions using the `google.api.http` annotation.
-    location:
-      start_position:
-        line_number: 17
-        column_number: 3
-      end_position:
-        line_number: 17
-        column_number: 68
-    rule_id: core::0127::http-annotation
-    rule_doc_uri: https://linter.aip.dev/127/http-annotation
-  - message: RPCs must include HTTP definitions using the `google.api.http` annotation.
-    location:
-      start_position:
-        line_number: 20
-        column_number: 3
-      end_position:
-        line_number: 20
-        column_number: 45
-    rule_id: core::0127::http-annotation
-    rule_doc_uri: https://linter.aip.dev/127/http-annotation
-  - message: RPCs must include HTTP definitions using the `google.api.http` annotation.
-    location:
-      start_position:
-        line_number: 22
-        column_number: 3
-      end_position:
-        line_number: 22
-        column_number: 55
-    rule_id: core::0127::http-annotation
-    rule_doc_uri: https://linter.aip.dev/127/http-annotation
-  - message: RPCs must include HTTP definitions using the `google.api.http` annotation.
-    location:
-      start_position:
-        line_number: 24
-        column_number: 3
-      end_position:
-        line_number: 24
-        column_number: 82
-    rule_id: core::0127::http-annotation
-    rule_doc_uri: https://linter.aip.dev/127/http-annotation
-  - message: RPCs must include HTTP definitions using the `google.api.http` annotation.
-    location:
-      start_position:
-        line_number: 26
-        column_number: 3
-      end_position:
-        line_number: 26
-        column_number: 67
-    rule_id: core::0127::http-annotation
-    rule_doc_uri: https://linter.aip.dev/127/http-annotation
-  - message: RPCs must include HTTP definitions using the `google.api.http` annotation.
-    location:
-      start_position:
-        line_number: 32
-        column_number: 3
-      end_position:
-        line_number: 32
-        column_number: 66
-    rule_id: core::0127::http-annotation
-    rule_doc_uri: https://linter.aip.dev/127/http-annotation
-  - message: RPCs must include HTTP definitions using the `google.api.http` annotation.
-    location:
-      start_position:
-        line_number: 35
-        column_number: 3
-      end_position:
-        line_number: 35
-        column_number: 78
-    rule_id: core::0127::http-annotation
-    rule_doc_uri: https://linter.aip.dev/127/http-annotation
-  - message: RPCs must include HTTP definitions using the `google.api.http` annotation.
-    location:
-      start_position:
-        line_number: 38
-        column_number: 3
-      end_position:
-        line_number: 38
-        column_number: 70
-    rule_id: core::0127::http-annotation
-    rule_doc_uri: https://linter.aip.dev/127/http-annotation
-  - message: RPCs must include HTTP definitions using the `google.api.http` annotation.
-    location:
-      start_position:
-        line_number: 40
-        column_number: 3
-      end_position:
-        line_number: 40
-        column_number: 60
-    rule_id: core::0127::http-annotation
-    rule_doc_uri: https://linter.aip.dev/127/http-annotation
-  - message: RPCs must include HTTP definitions using the `google.api.http` annotation.
-    location:
-      start_position:
-        line_number: 42
-        column_number: 3
-      end_position:
-        line_number: 42
-        column_number: 82
-    rule_id: core::0127::http-annotation
-    rule_doc_uri: https://linter.aip.dev/127/http-annotation
-  - message: RPCs must include HTTP definitions using the `google.api.http` annotation.
-    location:
-      start_position:
-        line_number: 48
-        column_number: 3
-      end_position:
-        line_number: 48
-        column_number: 51
-    rule_id: core::0127::http-annotation
-    rule_doc_uri: https://linter.aip.dev/127/http-annotation
-  - message: RPCs must include HTTP definitions using the `google.api.http` annotation.
-    location:
-      start_position:
-        line_number: 51
-        column_number: 3
-      end_position:
-        line_number: 51
-        column_number: 68
-    rule_id: core::0127::http-annotation
-    rule_doc_uri: https://linter.aip.dev/127/http-annotation
-  - message: RPCs must include HTTP definitions using the `google.api.http` annotation.
-    location:
-      start_position:
-        line_number: 54
-        column_number: 3
-      end_position:
-        line_number: 54
-        column_number: 45
-    rule_id: core::0127::http-annotation
-    rule_doc_uri: https://linter.aip.dev/127/http-annotation
-  - message: RPCs must include HTTP definitions using the `google.api.http` annotation.
-    location:
-      start_position:
-        line_number: 56
-        column_number: 3
-      end_position:
-        line_number: 56
-        column_number: 55
-    rule_id: core::0127::http-annotation
-    rule_doc_uri: https://linter.aip.dev/127/http-annotation
-  - message: Delete methods should include `(google.api.method_signature) = "name"`
-    location:
-      start_position:
-        line_number: 17
-        column_number: 3
-      end_position:
-        line_number: 17
-        column_number: 68
-    rule_id: core::0135::method-signature
-    rule_doc_uri: https://linter.aip.dev/135/method-signature
-  - message: Delete methods should include `(google.api.method_signature) = "name"`
-    location:
-      start_position:
-        line_number: 35
-        column_number: 3
-      end_position:
-        line_number: 35
-        column_number: 78
-    rule_id: core::0135::method-signature
-    rule_doc_uri: https://linter.aip.dev/135/method-signature
-  - message: Delete methods should include `(google.api.method_signature) = "name"`
-    location:
-      start_position:
-        line_number: 51
-        column_number: 3
-      end_position:
-        line_number: 51
-        column_number: 68
-    rule_id: core::0135::method-signature
-    rule_doc_uri: https://linter.aip.dev/135/method-signature
-  - message: The `name` field should include `(google.api.field_behavior) = REQUIRED`.
-    location:
-      start_position:
-        line_number: 174
-        column_number: 3
-      end_position:
-        line_number: 174
-        column_number: 18
-    rule_id: core::0131::request-name-behavior
-    rule_doc_uri: https://linter.aip.dev/131/request-name-behavior
-  - message: The `name` field should include `(google.api.field_behavior) = REQUIRED`.
-    location:
-      start_position:
-        line_number: 184
-        column_number: 3
-      end_position:
-        line_number: 184
-        column_number: 18
-    rule_id: core::0131::request-name-behavior
-    rule_doc_uri: https://linter.aip.dev/131/request-name-behavior
-  - message: The `name` field should include `(google.api.field_behavior) = REQUIRED`.
-    location:
-      start_position:
-        line_number: 191
-        column_number: 3
-      end_position:
-        line_number: 191
-        column_number: 18
-    rule_id: core::0131::request-name-behavior
-    rule_doc_uri: https://linter.aip.dev/131/request-name-behavior
-  - message: The `name` field should include `(google.api.field_behavior) = REQUIRED`.
-    location:
-      start_position:
-        line_number: 211
-        column_number: 3
-      end_position:
-        line_number: 211
-        column_number: 18
-    rule_id: core::0131::request-name-behavior
-    rule_doc_uri: https://linter.aip.dev/131/request-name-behavior
-  - message: The `name` field should include `(google.api.field_behavior) = REQUIRED`.
-    location:
-      start_position:
-        line_number: 221
-        column_number: 3
-      end_position:
-        line_number: 221
-        column_number: 18
-    rule_id: core::0131::request-name-behavior
-    rule_doc_uri: https://linter.aip.dev/131/request-name-behavior
-  - message: The `name` field should include `(google.api.field_behavior) = REQUIRED`.
-    location:
-      start_position:
-        line_number: 241
-        column_number: 3
-      end_position:
-        line_number: 241
-        column_number: 18
-    rule_id: core::0131::request-name-behavior
-    rule_doc_uri: https://linter.aip.dev/131/request-name-behavior
-  - message: The `item` field should include `(google.api.field_behavior) = REQUIRED`.
-    location:
-      start_position:
-        line_number: 148
-        column_number: 3
-      end_position:
-        line_number: 148
-        column_number: 16
-    rule_id: core::0133::request-resource-behavior
-    rule_doc_uri: https://linter.aip.dev/133/request-resource-behavior
-  - message: The `item` field should include `(google.api.field_behavior) = REQUIRED`.
-    location:
-      start_position:
-        line_number: 156
-        column_number: 3
-      end_position:
-        line_number: 156
+        line_number: 67
         column_number: 16
     rule_id: core::0133::request-resource-behavior
     rule_doc_uri: https://linter.aip.dev/133/request-resource-behavior
   - message: The `catalogue` field should include `(google.api.field_behavior) = REQUIRED`.
     location:
       start_position:
-        line_number: 199
+        line_number: 110
         column_number: 3
       end_position:
-        line_number: 199
+        line_number: 110
         column_number: 26
     rule_id: core::0133::request-resource-behavior
     rule_doc_uri: https://linter.aip.dev/133/request-resource-behavior
-  - message: The `user` field should include `(google.api.field_behavior) = REQUIRED`.
+  - message: The `item` field should include `(google.api.field_behavior) = REQUIRED`.
     location:
       start_position:
-        line_number: 229
+        line_number: 173
         column_number: 3
       end_position:
-        line_number: 229
+        line_number: 173
         column_number: 16
     rule_id: core::0133::request-resource-behavior
     rule_doc_uri: https://linter.aip.dev/133/request-resource-behavior
+  - message: The `item` field should include `(google.api.field_behavior) = REQUIRED`.
+    location:
+      start_position:
+        line_number: 179
+        column_number: 3
+      end_position:
+        line_number: 179
+        column_number: 16
+    rule_id: core::0133::request-resource-behavior
+    rule_doc_uri: https://linter.aip.dev/133/request-resource-behavior
+  - message: Get methods should include `(google.api.method_signature) = "name"`
+    location:
+      start_position:
+        line_number: 22
+        column_number: 3
+      end_position:
+        line_number: 22
+        column_number: 45
+    rule_id: core::0131::method-signature
+    rule_doc_uri: https://linter.aip.dev/131/method-signature
+  - message: Get methods should include `(google.api.method_signature) = "name"`
+    location:
+      start_position:
+        line_number: 24
+        column_number: 3
+      end_position:
+        line_number: 24
+        column_number: 70
+    rule_id: core::0131::method-signature
+    rule_doc_uri: https://linter.aip.dev/131/method-signature
+  - message: Get methods should include `(google.api.method_signature) = "name"`
+    location:
+      start_position:
+        line_number: 36
+        column_number: 3
+      end_position:
+        line_number: 36
+        column_number: 60
+    rule_id: core::0131::method-signature
+    rule_doc_uri: https://linter.aip.dev/131/method-signature
+  - message: Get methods should include `(google.api.method_signature) = "name"`
+    location:
+      start_position:
+        line_number: 38
+        column_number: 3
+      end_position:
+        line_number: 38
+        column_number: 85
+    rule_id: core::0131::method-signature
+    rule_doc_uri: https://linter.aip.dev/131/method-signature
+  - message: Get methods should include `(google.api.method_signature) = "name"`
+    location:
+      start_position:
+        line_number: 50
+        column_number: 3
+      end_position:
+        line_number: 50
+        column_number: 45
+    rule_id: core::0131::method-signature
+    rule_doc_uri: https://linter.aip.dev/131/method-signature
+  - message: Get methods should include `(google.api.method_signature) = "name"`
+    location:
+      start_position:
+        line_number: 52
+        column_number: 3
+      end_position:
+        line_number: 52
+        column_number: 70
+    rule_id: core::0131::method-signature
+    rule_doc_uri: https://linter.aip.dev/131/method-signature
+  - message: 'Unexpected field: Get RPCs must only contain fields explicitly described
+      in https://aip.dev/131, not "user_id".'
+    location:
+      start_position:
+        line_number: 79
+        column_number: 3
+      end_position:
+        line_number: 79
+        column_number: 21
+    rule_id: core::0131::request-unknown-fields
+    rule_doc_uri: https://linter.aip.dev/131/request-unknown-fields
+  - message: 'Unexpected field: Get RPCs must only contain fields explicitly described
+      in https://aip.dev/131, not "all".'
+    location:
+      start_position:
+        line_number: 86
+        column_number: 3
+      end_position:
+        line_number: 86
+        column_number: 15
+    rule_id: core::0131::request-unknown-fields
+    rule_doc_uri: https://linter.aip.dev/131/request-unknown-fields
+  - message: 'Unexpected field: Get RPCs must only contain fields explicitly described
+      in https://aip.dev/131, not "catalogue_id".'
+    location:
+      start_position:
+        line_number: 122
+        column_number: 3
+      end_position:
+        line_number: 122
+        column_number: 26
+    rule_id: core::0131::request-unknown-fields
+    rule_doc_uri: https://linter.aip.dev/131/request-unknown-fields
+  - message: 'Unexpected field: Get RPCs must only contain fields explicitly described
+      in https://aip.dev/131, not "user_id".'
+    location:
+      start_position:
+        line_number: 130
+        column_number: 5
+      end_position:
+        line_number: 130
+        column_number: 23
+    rule_id: core::0131::request-unknown-fields
+    rule_doc_uri: https://linter.aip.dev/131/request-unknown-fields
+  - message: 'Unexpected field: Get RPCs must only contain fields explicitly described
+      in https://aip.dev/131, not "all".'
+    location:
+      start_position:
+        line_number: 132
+        column_number: 5
+      end_position:
+        line_number: 132
+        column_number: 17
+    rule_id: core::0131::request-unknown-fields
+    rule_doc_uri: https://linter.aip.dev/131/request-unknown-fields
+  - message: 'Unexpected field: Get RPCs must only contain fields explicitly described
+      in https://aip.dev/131, not "item_id".'
+    location:
+      start_position:
+        line_number: 205
+        column_number: 3
+      end_position:
+        line_number: 205
+        column_number: 21
+    rule_id: core::0131::request-unknown-fields
+    rule_doc_uri: https://linter.aip.dev/131/request-unknown-fields
+  - message: 'Unexpected field: Get RPCs must only contain fields explicitly described
+      in https://aip.dev/131, not "parent_catalogue_id".'
+    location:
+      start_position:
+        line_number: 207
+        column_number: 3
+      end_position:
+        line_number: 207
+        column_number: 33
+    rule_id: core::0131::request-unknown-fields
+    rule_doc_uri: https://linter.aip.dev/131/request-unknown-fields
+  - message: 'Unexpected field: Get RPCs must only contain fields explicitly described
+      in https://aip.dev/131, not "catalogue_id".'
+    location:
+      start_position:
+        line_number: 215
+        column_number: 5
+      end_position:
+        line_number: 215
+        column_number: 28
+    rule_id: core::0131::request-unknown-fields
+    rule_doc_uri: https://linter.aip.dev/131/request-unknown-fields
+  - message: 'Unexpected field: Get RPCs must only contain fields explicitly described
+      in https://aip.dev/131, not "user_id".'
+    location:
+      start_position:
+        line_number: 217
+        column_number: 5
+      end_position:
+        line_number: 217
+        column_number: 23
+    rule_id: core::0131::request-unknown-fields
+    rule_doc_uri: https://linter.aip.dev/131/request-unknown-fields
+  - message: 'Unexpected field: Get RPCs must only contain fields explicitly described
+      in https://aip.dev/131, not "all".'
+    location:
+      start_position:
+        line_number: 219
+        column_number: 5
+      end_position:
+        line_number: 219
+        column_number: 17
+    rule_id: core::0131::request-unknown-fields
+    rule_doc_uri: https://linter.aip.dev/131/request-unknown-fields
+  - message: Message "CreateUserRequest" has no `parent` field
+    location:
+      start_position:
+        line_number: 65
+        column_number: 1
+      end_position:
+        line_number: 68
+        column_number: 1
+    rule_id: core::0133::request-parent-required
+    rule_doc_uri: https://linter.aip.dev/133/request-parent-required
+  - message: Message "CreateCatalogueRequest" has no `parent` field
+    location:
+      start_position:
+        line_number: 108
+        column_number: 1
+      end_position:
+        line_number: 111
+        column_number: 1
+    rule_id: core::0133::request-parent-required
+    rule_doc_uri: https://linter.aip.dev/133/request-parent-required
+  - message: Message "CreateItemRequest" has no `parent` field
+    location:
+      start_position:
+        line_number: 171
+        column_number: 1
+      end_position:
+        line_number: 174
+        column_number: 1
+    rule_id: core::0133::request-parent-required
+    rule_doc_uri: https://linter.aip.dev/133/request-parent-required
+  - message: Message "CreateItemStreamRequest" has no `parent` field
+    location:
+      start_position:
+        line_number: 177
+        column_number: 1
+      end_position:
+        line_number: 180
+        column_number: 1
+    rule_id: core::0133::request-parent-required
+    rule_doc_uri: https://linter.aip.dev/133/request-parent-required
   - message: Create methods should include `(google.api.method_signature) = "parent,item"`
     location:
       start_position:
-        line_number: 11
+        line_number: 13
         column_number: 3
       end_position:
-        line_number: 11
+        line_number: 13
         column_number: 51
     rule_id: core::0133::method-signature
     rule_doc_uri: https://linter.aip.dev/133/method-signature
-  - message: Create methods should include `(google.api.method_signature) = "parent,items_stream"`
+  - message: Create methods should include `(google.api.method_signature) = "parent,item_stream"`
     location:
       start_position:
-        line_number: 14
+        line_number: 16
         column_number: 3
       end_position:
-        line_number: 14
-        column_number: 79
+        line_number: 16
+        column_number: 90
     rule_id: core::0133::method-signature
     rule_doc_uri: https://linter.aip.dev/133/method-signature
   - message: Create methods should include `(google.api.method_signature) = "parent,catalogue"`
     location:
       start_position:
-        line_number: 32
+        line_number: 30
         column_number: 3
       end_position:
-        line_number: 32
+        line_number: 30
         column_number: 66
     rule_id: core::0133::method-signature
     rule_doc_uri: https://linter.aip.dev/133/method-signature
   - message: Create methods should include `(google.api.method_signature) = "parent,user"`
     location:
       start_position:
-        line_number: 48
+        line_number: 44
         column_number: 3
       end_position:
-        line_number: 48
+        line_number: 44
         column_number: 51
     rule_id: core::0133::method-signature
     rule_doc_uri: https://linter.aip.dev/133/method-signature
+  - message: Proto files should set `option java_outer_classname = "CatalogueProto"`.
+    location:
+      start_position:
+        line_number: 3
+        column_number: 1
+      end_position:
+        line_number: 3
+        column_number: 40
+    rule_id: core::0191::java-outer-classname
+    rule_doc_uri: https://linter.aip.dev/191/java-outer-classname
+  - message: API components should be in versioned packages.
+    location:
+      start_position:
+        line_number: 3
+        column_number: 1
+      end_position:
+        line_number: 3
+        column_number: 40
+    rule_id: core::0215::versioned-packages
+    rule_doc_uri: https://linter.aip.dev/215/versioned-packages
+  - message: RPCs must include HTTP definitions using the `google.api.http` annotation.
+    location:
+      start_position:
+        line_number: 13
+        column_number: 3
+      end_position:
+        line_number: 13
+        column_number: 51
+    rule_id: core::0127::http-annotation
+    rule_doc_uri: https://linter.aip.dev/127/http-annotation
+  - message: RPCs must include HTTP definitions using the `google.api.http` annotation.
+    location:
+      start_position:
+        line_number: 16
+        column_number: 3
+      end_position:
+        line_number: 16
+        column_number: 90
+    rule_id: core::0127::http-annotation
+    rule_doc_uri: https://linter.aip.dev/127/http-annotation
+  - message: RPCs must include HTTP definitions using the `google.api.http` annotation.
+    location:
+      start_position:
+        line_number: 19
+        column_number: 3
+      end_position:
+        line_number: 19
+        column_number: 68
+    rule_id: core::0127::http-annotation
+    rule_doc_uri: https://linter.aip.dev/127/http-annotation
+  - message: RPCs must include HTTP definitions using the `google.api.http` annotation.
+    location:
+      start_position:
+        line_number: 22
+        column_number: 3
+      end_position:
+        line_number: 22
+        column_number: 45
+    rule_id: core::0127::http-annotation
+    rule_doc_uri: https://linter.aip.dev/127/http-annotation
+  - message: RPCs must include HTTP definitions using the `google.api.http` annotation.
+    location:
+      start_position:
+        line_number: 24
+        column_number: 3
+      end_position:
+        line_number: 24
+        column_number: 70
+    rule_id: core::0127::http-annotation
+    rule_doc_uri: https://linter.aip.dev/127/http-annotation
+  - message: RPCs must include HTTP definitions using the `google.api.http` annotation.
+    location:
+      start_position:
+        line_number: 30
+        column_number: 3
+      end_position:
+        line_number: 30
+        column_number: 66
+    rule_id: core::0127::http-annotation
+    rule_doc_uri: https://linter.aip.dev/127/http-annotation
+  - message: RPCs must include HTTP definitions using the `google.api.http` annotation.
+    location:
+      start_position:
+        line_number: 33
+        column_number: 3
+      end_position:
+        line_number: 33
+        column_number: 78
+    rule_id: core::0127::http-annotation
+    rule_doc_uri: https://linter.aip.dev/127/http-annotation
+  - message: RPCs must include HTTP definitions using the `google.api.http` annotation.
+    location:
+      start_position:
+        line_number: 36
+        column_number: 3
+      end_position:
+        line_number: 36
+        column_number: 60
+    rule_id: core::0127::http-annotation
+    rule_doc_uri: https://linter.aip.dev/127/http-annotation
+  - message: RPCs must include HTTP definitions using the `google.api.http` annotation.
+    location:
+      start_position:
+        line_number: 38
+        column_number: 3
+      end_position:
+        line_number: 38
+        column_number: 85
+    rule_id: core::0127::http-annotation
+    rule_doc_uri: https://linter.aip.dev/127/http-annotation
+  - message: RPCs must include HTTP definitions using the `google.api.http` annotation.
+    location:
+      start_position:
+        line_number: 44
+        column_number: 3
+      end_position:
+        line_number: 44
+        column_number: 51
+    rule_id: core::0127::http-annotation
+    rule_doc_uri: https://linter.aip.dev/127/http-annotation
+  - message: RPCs must include HTTP definitions using the `google.api.http` annotation.
+    location:
+      start_position:
+        line_number: 47
+        column_number: 3
+      end_position:
+        line_number: 47
+        column_number: 68
+    rule_id: core::0127::http-annotation
+    rule_doc_uri: https://linter.aip.dev/127/http-annotation
+  - message: RPCs must include HTTP definitions using the `google.api.http` annotation.
+    location:
+      start_position:
+        line_number: 50
+        column_number: 3
+      end_position:
+        line_number: 50
+        column_number: 45
+    rule_id: core::0127::http-annotation
+    rule_doc_uri: https://linter.aip.dev/127/http-annotation
+  - message: RPCs must include HTTP definitions using the `google.api.http` annotation.
+    location:
+      start_position:
+        line_number: 52
+        column_number: 3
+      end_position:
+        line_number: 52
+        column_number: 70
+    rule_id: core::0127::http-annotation
+    rule_doc_uri: https://linter.aip.dev/127/http-annotation
+  - message: Method "DeleteUserRequest" has no `name` field
+    location:
+      start_position:
+        line_number: 71
+        column_number: 1
+      end_position:
+        line_number: 74
+        column_number: 1
+    rule_id: core::0135::request-name-required
+    rule_doc_uri: https://linter.aip.dev/135/request-name-required
+  - message: Method "DeleteCatalogueRequest" has no `name` field
+    location:
+      start_position:
+        line_number: 114
+        column_number: 1
+      end_position:
+        line_number: 117
+        column_number: 1
+    rule_id: core::0135::request-name-required
+    rule_doc_uri: https://linter.aip.dev/135/request-name-required
+  - message: Method "DeleteItemRequest" has no `name` field
+    location:
+      start_position:
+        line_number: 197
+        column_number: 1
+      end_position:
+        line_number: 200
+        column_number: 1
+    rule_id: core::0135::request-name-required
+    rule_doc_uri: https://linter.aip.dev/135/request-name-required
+  - message: 'Unexpected field: Delete RPCs must only contain fields explicitly described
+      in AIPs, not "user_id".'
+    location:
+      start_position:
+        line_number: 73
+        column_number: 3
+      end_position:
+        line_number: 73
+        column_number: 21
+    rule_id: core::0135::request-unknown-fields
+    rule_doc_uri: https://linter.aip.dev/135/request-unknown-fields
+  - message: 'Unexpected field: Delete RPCs must only contain fields explicitly described
+      in AIPs, not "catalogue_id".'
+    location:
+      start_position:
+        line_number: 116
+        column_number: 3
+      end_position:
+        line_number: 116
+        column_number: 26
+    rule_id: core::0135::request-unknown-fields
+    rule_doc_uri: https://linter.aip.dev/135/request-unknown-fields
+  - message: 'Unexpected field: Delete RPCs must only contain fields explicitly described
+      in AIPs, not "item_id".'
+    location:
+      start_position:
+        line_number: 199
+        column_number: 3
+      end_position:
+        line_number: 199
+        column_number: 21
+    rule_id: core::0135::request-unknown-fields
+    rule_doc_uri: https://linter.aip.dev/135/request-unknown-fields
+  - message: Method "GetUserRequest" has no `name` field
+    location:
+      start_position:
+        line_number: 77
+        column_number: 1
+      end_position:
+        line_number: 80
+        column_number: 1
+    rule_id: core::0131::request-name-required
+    rule_doc_uri: https://linter.aip.dev/131/request-name-required
+  - message: Method "GetUserStreamRequest" has no `name` field
+    location:
+      start_position:
+        line_number: 83
+        column_number: 1
+      end_position:
+        line_number: 87
+        column_number: 1
+    rule_id: core::0131::request-name-required
+    rule_doc_uri: https://linter.aip.dev/131/request-name-required
+  - message: Method "GetCatalogueRequest" has no `name` field
+    location:
+      start_position:
+        line_number: 120
+        column_number: 1
+      end_position:
+        line_number: 123
+        column_number: 1
+    rule_id: core::0131::request-name-required
+    rule_doc_uri: https://linter.aip.dev/131/request-name-required
+  - message: Method "GetCatalogueStreamRequest" has no `name` field
+    location:
+      start_position:
+        line_number: 126
+        column_number: 1
+      end_position:
+        line_number: 134
+        column_number: 1
+    rule_id: core::0131::request-name-required
+    rule_doc_uri: https://linter.aip.dev/131/request-name-required
+  - message: Method "GetItemRequest" has no `name` field
+    location:
+      start_position:
+        line_number: 203
+        column_number: 1
+      end_position:
+        line_number: 208
+        column_number: 1
+    rule_id: core::0131::request-name-required
+    rule_doc_uri: https://linter.aip.dev/131/request-name-required
+  - message: Method "GetItemStreamRequest" has no `name` field
+    location:
+      start_position:
+        line_number: 211
+        column_number: 1
+      end_position:
+        line_number: 221
+        column_number: 1
+    rule_id: core::0131::request-name-required
+    rule_doc_uri: https://linter.aip.dev/131/request-name-required
+  - message: Fields should not use the `_name` suffix.
+    suggestion: catalogue
+    location:
+      start_position:
+        line_number: 102
+        column_number: 10
+      end_position:
+        line_number: 102
+        column_number: 23
+    rule_id: core::0122::name-suffix
+    rule_doc_uri: https://linter.aip.dev/122/name-suffix
+  - message: Resource messages should include a `google.api.resource` annotation.
+    location:
+      start_position:
+        line_number: 143
+        column_number: 1
+      end_position:
+        line_number: 167
+        column_number: 1
+    rule_id: core::0123::resource-annotation
+    rule_doc_uri: https://linter.aip.dev/123/resource-annotation
+  - message: Create RPCs should have the corresponding resource as the response message,
+      such as "ItemStream".
+    suggestion: ItemStream
+    location:
+      start_position:
+        line_number: 16
+        column_number: 65
+      end_position:
+        line_number: 16
+        column_number: 88
+    rule_id: core::0133::response-message-name
+    rule_doc_uri: https://linter.aip.dev/133/response-message-name
+  - message: Delete methods should include `(google.api.method_signature) = "name"`
+    location:
+      start_position:
+        line_number: 19
+        column_number: 3
+      end_position:
+        line_number: 19
+        column_number: 68
+    rule_id: core::0135::method-signature
+    rule_doc_uri: https://linter.aip.dev/135/method-signature
+  - message: Delete methods should include `(google.api.method_signature) = "name"`
+    location:
+      start_position:
+        line_number: 33
+        column_number: 3
+      end_position:
+        line_number: 33
+        column_number: 78
+    rule_id: core::0135::method-signature
+    rule_doc_uri: https://linter.aip.dev/135/method-signature
+  - message: Delete methods should include `(google.api.method_signature) = "name"`
+    location:
+      start_position:
+        line_number: 47
+        column_number: 3
+      end_position:
+        line_number: 47
+        column_number: 68
+    rule_id: core::0135::method-signature
+    rule_doc_uri: https://linter.aip.dev/135/method-signature
+  - message: Use "int32" instead of "uint32".
+    suggestion: int32
+    location:
+      start_position:
+        line_number: 164
+        column_number: 3
+      end_position:
+        line_number: 164
+        column_number: 8
+    rule_id: core::0141::forbidden-types
+    rule_doc_uri: https://linter.aip.dev/141/forbidden-types

@@ -5,17 +5,20 @@ import java.util.Optional;
 
 public interface Catalogue {
   org.arjun.cataloguemicroservice.entity.Catalogue
-      createCatalogueService(org.arjun.cataloguemicroservice.entity.Catalogue catalogue);
+      createCatalogueService(final org.arjun.cataloguemicroservice.entity.Catalogue catalogue);
 
-  void deleteCatalogueService(String catalogueId);
+  void deleteCatalogueService(final String catalogueId);
 
   Optional<org.arjun.cataloguemicroservice.entity.Catalogue>
-      getCatalogueService(String catalogueId);
+      getCatalogueService(final String catalogueId);
 
   List<org.arjun.cataloguemicroservice.entity.Catalogue>
-      getCatalogueStreamByUserId(String userId);
+      getCatalogueStreamByUserId(final String userId);
 
   List<org.arjun.cataloguemicroservice.entity.Catalogue>
       getCatalogueStreamAll();
+
+  org.arjun.cataloguemicroservice.Catalogue toProto(
+          final org.arjun.cataloguemicroservice.entity.Catalogue catalogue);
 
 }

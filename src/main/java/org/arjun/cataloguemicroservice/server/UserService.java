@@ -3,8 +3,6 @@ package org.arjun.cataloguemicroservice.server;
 import com.google.protobuf.Empty;
 import io.grpc.stub.StreamObserver;
 import java.util.Optional;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.arjun.cataloguemicroservice.*;
 import org.arjun.cataloguemicroservice.repository.UserRepo;
 import org.arjun.cataloguemicroservice.service.converter.Converter;
@@ -19,8 +17,6 @@ public class UserService extends UserServiceGrpc.UserServiceImplBase {
   @Autowired
   UserRepo userRepo;
 
-  private static final Logger logger = LogManager.getLogger(UserService.class);
-
   @Autowired
   UserServiceUtil userServiceUtil;
 
@@ -29,8 +25,8 @@ public class UserService extends UserServiceGrpc.UserServiceImplBase {
 
   @Override
   public void createUser(CreateUserRequest request, StreamObserver<User> responseObserver) {
-    responseObserver.onNext(userServiceUtil.createUserService(
-            converter.toUser(request)).toProto());
+    responseObserver.onNext(userServiceUtil.toProto(userServiceUtil.createUserService(
+            converter.toUser(request))));
     responseObserver.onCompleted();
   }
 
@@ -46,7 +42,7 @@ public class UserService extends UserServiceGrpc.UserServiceImplBase {
   public void getUser(GetUserRequest request, StreamObserver<User> responseObserver) {
     Optional<org.arjun.cataloguemicroservice.entity.User> entry =
             userServiceUtil.getUserService(request.getUserId());
-    entry.map(e -> e.toProto())
+    entry.map(e -> userServiceUtil.toProto(e))
             .ifPresent(responseObserver::onNext);
     responseObserver.onCompleted();
   }
@@ -55,7 +51,7 @@ public class UserService extends UserServiceGrpc.UserServiceImplBase {
   public void getUserStream(GetUserStreamRequest request, StreamObserver<UserStream>
           responseObserver) {
     userServiceUtil.getUserStreamService().forEach(e -> {
-      responseObserver.onNext(UserStream.newBuilder().setUser(e.toProto()).build());
+      responseObserver.onNext(UserStream.newBuilder().setUser(userServiceUtil.toProto(e)).build());
     });
     responseObserver.onCompleted();
   }

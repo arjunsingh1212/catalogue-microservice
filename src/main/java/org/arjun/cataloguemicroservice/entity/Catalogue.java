@@ -17,7 +17,8 @@ public class Catalogue {
   public Catalogue() {
   }
 
-  public Catalogue(String catalogueId, String userId, String catalogueName, String description) {
+  public Catalogue(final String catalogueId, final String userId,
+                   final String catalogueName, final String description) {
     this.catalogueId = catalogueId;
     this.userId = userId;
     this.catalogueName = catalogueName;
@@ -28,7 +29,7 @@ public class Catalogue {
     return catalogueId;
   }
 
-  public void setCatalogueId(String catalogueId) {
+  public void setCatalogueId(final String catalogueId) {
     this.catalogueId = catalogueId;
   }
 
@@ -36,7 +37,7 @@ public class Catalogue {
     return userId;
   }
 
-  public void setUserId(String userId) {
+  public void setUserId(final String userId) {
     this.userId = userId;
   }
 
@@ -44,7 +45,7 @@ public class Catalogue {
     return catalogueName;
   }
 
-  public void setCatalogueName(String catalogueName) {
+  public void setCatalogueName(final String catalogueName) {
     this.catalogueName = catalogueName;
   }
 
@@ -52,7 +53,7 @@ public class Catalogue {
     return description;
   }
 
-  public void setDescription(String description) {
+  public void setDescription(final String description) {
     this.description = description;
   }
 
@@ -64,11 +65,5 @@ public class Catalogue {
             + ", catalogueName='" + catalogueName + '\''
             + ", description='" + description + '\''
             + '}';
-  }
-
-  public org.arjun.cataloguemicroservice.Catalogue toProto() {
-    return org.arjun.cataloguemicroservice.Catalogue.newBuilder()
-            .setUserId(getUserId()).setCatalogueName(getCatalogueName())
-            .setDescription(getDescription()).setCatalogueId(getCatalogueId()).build();
   }
 }
