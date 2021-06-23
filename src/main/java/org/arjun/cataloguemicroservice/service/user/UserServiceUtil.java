@@ -40,4 +40,15 @@ public class UserServiceUtil implements
     return org.arjun.cataloguemicroservice.User.newBuilder()
             .setUserId(user.getUserId()).setUsername(user.getUserName()).build();
   }
+
+  @Override
+  public boolean checkUserExistenceById(final String userId) {
+    return userRepo.findById(userId).isPresent();
+  }
+
+  @Override
+  public boolean checkUserExistenceByUserName(final String userName) {
+    return !userRepo.findByUserName(userName).isEmpty();
+  }
+
 }

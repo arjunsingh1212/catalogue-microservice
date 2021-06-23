@@ -46,4 +46,15 @@ public class CatalogueServiceUtil
             .setUserId(catalogue.getUserId()).setCatalogueName(catalogue.getCatalogueName())
             .setDescription(catalogue.getDescription()).setCatalogueId(catalogue.getCatalogueId()).build();
   }
+
+  @Override
+  public boolean checkCatalogueExistenceByUserIdAndCatalogueName(
+          final String userId, final String userName) {
+    return catalogueRepo.findByUserIdAndCatalogueName(userId,userName) != null;
+  }
+
+  @Override
+  public boolean checkCatalogueExistenceById(final String catalogueId) {
+    return catalogueRepo.findById(catalogueId).isPresent();
+  }
 }

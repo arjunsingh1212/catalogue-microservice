@@ -81,4 +81,15 @@ public class ItemServiceUtil implements org.arjun.cataloguemicroservice.service.
                     item.getPrice().toString())).setQuantity(item.getQuantity())
             .setType(type).build();
   }
+
+  @Override
+  public boolean checkItemExistenceByCatalogueIdAndItemName(
+          final String catalogueId, final String itemName) {
+    return itemRepo.findByCatalogueIdAndName(catalogueId,itemName) != null;
+  }
+
+  @Override
+  public boolean checkItemExistenceById(final String itemId) {
+    return itemRepo.findById(itemId).isPresent();
+  }
 }

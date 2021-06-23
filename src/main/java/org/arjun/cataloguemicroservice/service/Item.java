@@ -23,4 +23,9 @@ public interface Item {
 
   org.arjun.cataloguemicroservice.Item toProto(
           final org.arjun.cataloguemicroservice.entity.Item item);
+
+  boolean checkItemExistenceByCatalogueIdAndItemName(
+          final String catalogueId, final String itemName);
+
+  boolean checkItemExistenceById(final String itemId);
 }

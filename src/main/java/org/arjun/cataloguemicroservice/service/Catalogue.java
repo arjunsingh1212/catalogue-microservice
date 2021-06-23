@@ -21,4 +21,9 @@ public interface Catalogue {
   org.arjun.cataloguemicroservice.Catalogue toProto(
           final org.arjun.cataloguemicroservice.entity.Catalogue catalogue);
 
+  boolean checkCatalogueExistenceByUserIdAndCatalogueName(
+          final String userId, final String userName);
+
+  boolean checkCatalogueExistenceById(final String catalogueId);
+
 }

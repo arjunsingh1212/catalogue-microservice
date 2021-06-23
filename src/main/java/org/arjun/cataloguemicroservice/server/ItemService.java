@@ -1,6 +1,7 @@
 package org.arjun.cataloguemicroservice.server;
 
 import com.google.protobuf.Empty;
+import io.grpc.Status;
 import io.grpc.stub.StreamObserver;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -26,9 +27,17 @@ public class ItemService extends ItemServiceGrpc.ItemServiceImplBase {
   @Override
   public void createItem(final CreateItemRequest request,
                          final StreamObserver<Item> responseObserver) {
+    if (itemServiceUtil.checkItemExistenceByCatalogueIdAndItemName(
+            request.getItem().getCatalogueId(),request.getItem().getName())) {
+      Status status = Status.ALREADY_EXISTS
+              .withDescription("Item with the given catalogueId and Item Name already present");
+      responseObserver.onError(status.asRuntimeException());
+      return;
+    }
     itemServiceUtil.createItemService(converter.toItem(request));
     responseObserver.onNext(request.getItem());
     responseObserver.onCompleted();
+
   }
 
   @Override
@@ -62,18 +71,32 @@ public class ItemService extends ItemServiceGrpc.ItemServiceImplBase {
   @Override
   public void deleteItem(final DeleteItemRequest request,
                          final StreamObserver<Empty> responseObserver) {
-    itemServiceUtil.deleteItemService(request.getItemId());
-    responseObserver.onNext(Empty.getDefaultInstance());
-    responseObserver.onCompleted();
+    if (itemServiceUtil.checkItemExistenceById(request.getItemId())) {
+      itemServiceUtil.deleteItemService(request.getItemId());
+      responseObserver.onNext(Empty.getDefaultInstance());
+      responseObserver.onCompleted();
+    } else {
+      Status status = Status.NOT_FOUND
+              .withDescription("Item with the given item Id not found");
+      responseObserver.onError(status.asRuntimeException());
+      return;
+    }
   }
 
 
   @Override
   public void getItem(final GetItemRequest request, final StreamObserver<Item> responseObserver) {
-    final org.arjun.cataloguemicroservice.entity.Item item =
+    if (itemServiceUtil.checkItemExistenceById(request.getItemId())) {
+      final org.arjun.cataloguemicroservice.entity.Item item =
             itemServiceUtil.getItemService(request.getItemId(),request.getParentCatalogueId());
-    responseObserver.onNext(itemServiceUtil.toProto(item));
-    responseObserver.onCompleted();
+      responseObserver.onNext(itemServiceUtil.toProto(item));
+      responseObserver.onCompleted();
+    } else {
+      Status status = Status.NOT_FOUND
+              .withDescription("Item with the given item Id not found");
+      responseObserver.onError(status.asRuntimeException());
+      return;
+    }
   }
 
   @Override

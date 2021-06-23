@@ -19,6 +19,7 @@ public class Converter {
                     request.getUser().getUsername());
   }
 
+
   public Catalogue toCatalogue(final CreateCatalogueRequest request) {
     return new Catalogue(
                     request.getCatalogue().getCatalogueId(),

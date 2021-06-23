@@ -3,6 +3,7 @@ package org.arjun.cataloguemicroservice.client;
 import com.google.protobuf.Empty;
 import io.grpc.ManagedChannel;
 import io.grpc.ManagedChannelBuilder;
+import io.grpc.Status;
 import io.grpc.stub.StreamObserver;
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -40,16 +41,21 @@ public class GRPCClient {
             .setUserId(UUID.randomUUID().toString()).setUsername(userName).build();
     final CreateUserRequest request = CreateUserRequest.newBuilder()
             .setUser(user).build();
-    final User response = stub.createUser(request);
-    if (logger.isInfoEnabled()) {
-      logger.info("Response: " + response.toString());
+    try {
+      final User response = stub.createUser(request);
+      if (logger.isInfoEnabled()) {
+        logger.info("Response: " + response.toString());
+      }
+    } catch (Exception except) {
+      Status status = Status.fromThrowable(except);
+      logger.error(status.getCode() + " : " + status.getDescription());
     }
   }
 
   private void deleteUser(final String userId) {
     final DeleteUserRequest request = DeleteUserRequest.newBuilder().setUserId(userId).build();
     final Empty response = stub.deleteUser(request);
-    logger.info("Response: " + response.toString());
+    logger.info("Response: " + "Successfully Deleted" + response.toString());
   }
 
   private void getUser(final String userId) {
@@ -233,7 +239,7 @@ public class GRPCClient {
     final GRPCClient client = new GRPCClient();
 //    client.createUser("Partner X");
 //    client.deleteUser("ae38f97c-5532-48e7-89ee-d6f70aad752a");
-//    client.getUser("00ed1cba-b9f2-46fc-b662-4ff30955f470");
+    client.getUser("00ed1cba-b9f2-46fc-b662-4ff30955f470");
 //    client.getUserStream();
 //
 //    client.createCatalogue("3660ada0-f532-44f5-b28c-1ca573fc970b",

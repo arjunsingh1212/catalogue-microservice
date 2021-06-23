@@ -17,4 +17,9 @@ public interface User {
 
   org.arjun.cataloguemicroservice.User toProto(
           final org.arjun.cataloguemicroservice.entity.User user);
+
+  boolean checkUserExistenceById(
+          final String userId);
+
+  boolean checkUserExistenceByUserName(final String userName);
 }

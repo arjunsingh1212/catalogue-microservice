@@ -11,4 +11,7 @@ public interface ItemRepo extends JpaRepository<Item, String> {
   List<Item> findByCatalogueId(final String catalogueId);
 
   Item findByItemIdAndCatalogueId(final String itemId, final String parentCatalogueId);
+
+  Item findByCatalogueIdAndName(final String itemId, final String parentCatalogueId);
+
 }
