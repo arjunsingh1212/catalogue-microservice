@@ -16,6 +16,7 @@ public class Item {
   private String type;
 
   public Item() {
+    //default Empty constructor req. by JPA.
   }
 
   public Item(final String name, final BigDecimal price, final int quantity,

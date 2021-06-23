@@ -13,7 +13,7 @@ public class UserServiceUtil implements
         org.arjun.cataloguemicroservice.service.User {
 
   @Autowired
-  UserRepo userRepo;
+  private UserRepo userRepo;
 
   @Override
   public User createUserService(final User userInstance) {

@@ -15,6 +15,7 @@ public class User {
 
 
   public User() {
+    //default Empty constructor req. by JPA.
   }
 
   public User(final String uid, final String uname) {

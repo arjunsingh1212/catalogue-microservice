@@ -13,10 +13,10 @@ import org.springframework.stereotype.Component;
 public class ItemServiceUtil implements org.arjun.cataloguemicroservice.service.Item {
 
   @Autowired
-  ItemRepo itemRepo;
+  private ItemRepo itemRepo;
 
   @Autowired
-  CatalogueRepo catalogueRepo;
+  private CatalogueRepo catalogueRepo;
 
   @Override
   public Item createItemService(final Item item) {
@@ -40,7 +40,7 @@ public class ItemServiceUtil implements org.arjun.cataloguemicroservice.service.
 
   @Override
   public List<Item> getItemStreamByUserId(final String userId) {
-    List<Item> itemList = new ArrayList<>();
+    final List<Item> itemList = new ArrayList<>();
     catalogueRepo.findByUserId(userId).forEach(e -> {
       itemRepo.findByCatalogueId(e.getCatalogueId()).forEach(ele -> {
         itemList.add(ele);
@@ -75,8 +75,10 @@ public class ItemServiceUtil implements org.arjun.cataloguemicroservice.service.
         break;
     }
     return org.arjun.cataloguemicroservice.Item.newBuilder()
-            .setItemId(item.getItemId()).setCatalogueId(item.getCatalogueId()).setName(item.getName())
-            .setPrice(Double.parseDouble(item.getPrice().toString())).setQuantity(item.getQuantity())
+            .setItemId(item.getItemId()).setCatalogueId(
+                    item.getCatalogueId()).setName(item.getName())
+            .setPrice(Double.parseDouble(
+                    item.getPrice().toString())).setQuantity(item.getQuantity())
             .setType(type).build();
   }
 }

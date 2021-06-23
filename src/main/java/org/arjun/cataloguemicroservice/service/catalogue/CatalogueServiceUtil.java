@@ -13,7 +13,7 @@ public class CatalogueServiceUtil
         implements org.arjun.cataloguemicroservice.service.Catalogue {
 
   @Autowired
-  CatalogueRepo catalogueRepo;
+  private CatalogueRepo catalogueRepo;
 
   @Override
   public Catalogue createCatalogueService(final Catalogue catalogue) {

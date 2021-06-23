@@ -15,6 +15,7 @@ public class Catalogue {
   private String description;
 
   public Catalogue() {
+    //default Empty constructor req. by JPA.
   }
 
   public Catalogue(final String catalogueId, final String userId,
