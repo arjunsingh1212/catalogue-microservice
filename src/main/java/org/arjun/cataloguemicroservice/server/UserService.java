@@ -4,7 +4,13 @@ import com.google.protobuf.Empty;
 import io.grpc.Status;
 import io.grpc.stub.StreamObserver;
 import java.util.Optional;
-import org.arjun.cataloguemicroservice.*;
+import org.arjun.cataloguemicroservice.CreateUserRequest;
+import org.arjun.cataloguemicroservice.DeleteUserRequest;
+import org.arjun.cataloguemicroservice.GetUserRequest;
+import org.arjun.cataloguemicroservice.GetUserStreamRequest;
+import org.arjun.cataloguemicroservice.User;
+import org.arjun.cataloguemicroservice.UserServiceGrpc;
+import org.arjun.cataloguemicroservice.UserStream;
 import org.arjun.cataloguemicroservice.service.converter.Converter;
 import org.arjun.cataloguemicroservice.service.user.UserServiceUtil;
 import org.lognet.springboot.grpc.GRpcService;
@@ -24,7 +30,7 @@ public class UserService extends UserServiceGrpc.UserServiceImplBase {
   public void createUser(final CreateUserRequest request,
                          final StreamObserver<User> responseObserver) {
     if (userServiceUtil.checkUserExistenceByUserName(request.getUser().getUsername())) {
-      Status status = Status.ALREADY_EXISTS
+      final Status status = Status.ALREADY_EXISTS
               .withDescription("User with the given User Name already present");
       responseObserver.onError(status.asRuntimeException());
       return;
@@ -42,7 +48,7 @@ public class UserService extends UserServiceGrpc.UserServiceImplBase {
       responseObserver.onNext(Empty.getDefaultInstance());
       responseObserver.onCompleted();
     } else {
-      Status status = Status.NOT_FOUND
+      final Status status = Status.NOT_FOUND
               .withDescription("User with the given User Id not found");
       responseObserver.onError(status.asRuntimeException());
       return;
@@ -58,7 +64,7 @@ public class UserService extends UserServiceGrpc.UserServiceImplBase {
               .ifPresent(responseObserver::onNext);
       responseObserver.onCompleted();
     } else {
-      Status status = Status.NOT_FOUND
+      final Status status = Status.NOT_FOUND
               .withDescription("User with the given User Id not found");
       responseObserver.onError(status.asRuntimeException());
       return;

@@ -18,6 +18,13 @@ public class Catalogue {
     //default Empty constructor req. by JPA.
   }
 
+  /**
+   * Constructor.
+   * @param catalogueId id of catalogue
+   * @param userId id of user associated with catalogue
+   * @param catalogueName name of catalogue
+   * @param description description
+   */
   public Catalogue(final String catalogueId, final String userId,
                    final String catalogueName, final String description) {
     this.catalogueId = catalogueId;

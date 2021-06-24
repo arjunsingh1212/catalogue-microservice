@@ -5,7 +5,15 @@ import io.grpc.Status;
 import io.grpc.stub.StreamObserver;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.arjun.cataloguemicroservice.*;
+import org.arjun.cataloguemicroservice.CreateItemRequest;
+import org.arjun.cataloguemicroservice.CreateItemStreamRequest;
+import org.arjun.cataloguemicroservice.CreateItemStreamResponse;
+import org.arjun.cataloguemicroservice.DeleteItemRequest;
+import org.arjun.cataloguemicroservice.GetItemRequest;
+import org.arjun.cataloguemicroservice.GetItemStreamRequest;
+import org.arjun.cataloguemicroservice.Item;
+import org.arjun.cataloguemicroservice.ItemServiceGrpc;
+import org.arjun.cataloguemicroservice.ItemStream;
 import org.arjun.cataloguemicroservice.service.converter.Converter;
 import org.arjun.cataloguemicroservice.service.item.ItemServiceUtil;
 import org.lognet.springboot.grpc.GRpcService;
@@ -28,8 +36,8 @@ public class ItemService extends ItemServiceGrpc.ItemServiceImplBase {
   public void createItem(final CreateItemRequest request,
                          final StreamObserver<Item> responseObserver) {
     if (itemServiceUtil.checkItemExistenceByCatalogueIdAndItemName(
-            request.getItem().getCatalogueId(),request.getItem().getName())) {
-      Status status = Status.ALREADY_EXISTS
+            request.getItem().getCatalogueId(), request.getItem().getName())) {
+      final Status status = Status.ALREADY_EXISTS
               .withDescription("Item with the given catalogueId and Item Name already present");
       responseObserver.onError(status.asRuntimeException());
       return;
@@ -43,8 +51,7 @@ public class ItemService extends ItemServiceGrpc.ItemServiceImplBase {
   @Override
   public StreamObserver<CreateItemStreamRequest> createItemStream(
           final StreamObserver<CreateItemStreamResponse> responseObserver) {
-    final StreamObserver<CreateItemStreamRequest> requestStreamObserver =
-            new StreamObserver<CreateItemStreamRequest>() {
+    return new StreamObserver<CreateItemStreamRequest>() {
       @Override
       public void onNext(final CreateItemStreamRequest value) {
         itemServiceUtil.createItemService(
@@ -65,7 +72,6 @@ public class ItemService extends ItemServiceGrpc.ItemServiceImplBase {
         responseObserver.onCompleted();
       }
     };
-    return requestStreamObserver;
   }
 
   @Override
@@ -76,7 +82,7 @@ public class ItemService extends ItemServiceGrpc.ItemServiceImplBase {
       responseObserver.onNext(Empty.getDefaultInstance());
       responseObserver.onCompleted();
     } else {
-      Status status = Status.NOT_FOUND
+      final Status status = Status.NOT_FOUND
               .withDescription("Item with the given item Id not found");
       responseObserver.onError(status.asRuntimeException());
       return;
@@ -88,11 +94,11 @@ public class ItemService extends ItemServiceGrpc.ItemServiceImplBase {
   public void getItem(final GetItemRequest request, final StreamObserver<Item> responseObserver) {
     if (itemServiceUtil.checkItemExistenceById(request.getItemId())) {
       final org.arjun.cataloguemicroservice.entity.Item item =
-            itemServiceUtil.getItemService(request.getItemId(),request.getParentCatalogueId());
+              itemServiceUtil.getItemService(request.getItemId(), request.getParentCatalogueId());
       responseObserver.onNext(itemServiceUtil.toProto(item));
       responseObserver.onCompleted();
     } else {
-      Status status = Status.NOT_FOUND
+      final Status status = Status.NOT_FOUND
               .withDescription("Item with the given item Id not found");
       responseObserver.onError(status.asRuntimeException());
       return;
@@ -102,23 +108,22 @@ public class ItemService extends ItemServiceGrpc.ItemServiceImplBase {
   @Override
   public void getItemStream(final GetItemStreamRequest request,
                             final StreamObserver<ItemStream> responseObserver) {
-    if (!request.getCatalogueId().isBlank()) {
-      itemServiceUtil.getItemStreamByCatalogueId(
-              request.getCatalogueId()).forEach(e -> {
+    if (request.getCatalogueId().isBlank() && request.getUserId().isBlank()) {
+      itemServiceUtil.getItemStreamAll().forEach(ele -> {
         responseObserver.onNext(ItemStream.newBuilder()
-                .setItem(itemServiceUtil.toProto(e)).build());
+                .setItem(itemServiceUtil.toProto(ele)).build());
       });
       responseObserver.onCompleted();
-    } else if (!request.getUserId().isBlank()) {
+    } else if (request.getCatalogueId().isBlank()) {
       itemServiceUtil.getItemStreamByUserId(request.getUserId()).forEach(ele -> {
         responseObserver.onNext(ItemStream.newBuilder()
                 .setItem(itemServiceUtil.toProto(ele)).build());
       });
       responseObserver.onCompleted();
     } else {
-      itemServiceUtil.getItemStreamAll().forEach(ele -> {
-        responseObserver.onNext(ItemStream.newBuilder().
-                setItem(itemServiceUtil.toProto(ele)).build());
+      itemServiceUtil.getItemStreamByCatalogueId(request.getCatalogueId()).forEach(e -> {
+        responseObserver.onNext(ItemStream.newBuilder()
+                .setItem(itemServiceUtil.toProto(e)).build());
       });
       responseObserver.onCompleted();
     }

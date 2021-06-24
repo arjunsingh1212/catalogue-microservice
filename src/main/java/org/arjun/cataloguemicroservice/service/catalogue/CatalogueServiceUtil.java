@@ -44,7 +44,8 @@ public class CatalogueServiceUtil
   public org.arjun.cataloguemicroservice.Catalogue toProto(final Catalogue catalogue) {
     return org.arjun.cataloguemicroservice.Catalogue.newBuilder()
             .setUserId(catalogue.getUserId()).setCatalogueName(catalogue.getCatalogueName())
-            .setDescription(catalogue.getDescription()).setCatalogueId(catalogue.getCatalogueId()).build();
+            .setDescription(catalogue.getDescription()).setCatalogueId(catalogue.getCatalogueId())
+            .build();
   }
 
   @Override

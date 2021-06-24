@@ -4,7 +4,13 @@ import com.google.protobuf.Empty;
 import io.grpc.Status;
 import io.grpc.stub.StreamObserver;
 import java.util.Optional;
-import org.arjun.cataloguemicroservice.*;
+import org.arjun.cataloguemicroservice.Catalogue;
+import org.arjun.cataloguemicroservice.CatalogueServiceGrpc;
+import org.arjun.cataloguemicroservice.CatalogueStream;
+import org.arjun.cataloguemicroservice.CreateCatalogueRequest;
+import org.arjun.cataloguemicroservice.DeleteCatalogueRequest;
+import org.arjun.cataloguemicroservice.GetCatalogueRequest;
+import org.arjun.cataloguemicroservice.GetCatalogueStreamRequest;
 import org.arjun.cataloguemicroservice.service.catalogue.CatalogueServiceUtil;
 import org.arjun.cataloguemicroservice.service.converter.Converter;
 import org.lognet.springboot.grpc.GRpcService;
@@ -24,8 +30,8 @@ public class CatalogueService extends CatalogueServiceGrpc.CatalogueServiceImplB
                               final StreamObserver<Catalogue> responseObserver) {
     if (catalogueServiceUtil.checkCatalogueExistenceByUserIdAndCatalogueName(
             request.getCatalogue().getUserId(),request.getCatalogue().getCatalogueName())) {
-      Status status = Status.ALREADY_EXISTS
-              .withDescription("Catalogue with the given userId and Catalogue Name already present");
+      final Status status = Status.ALREADY_EXISTS
+              .withDescription("Catalogue with the given userId and catalogueName already present");
       responseObserver.onError(status.asRuntimeException());
       return;
     }
@@ -42,7 +48,7 @@ public class CatalogueService extends CatalogueServiceGrpc.CatalogueServiceImplB
       responseObserver.onNext(Empty.getDefaultInstance());
       responseObserver.onCompleted();
     } else {
-      Status status = Status.NOT_FOUND
+      final Status status = Status.NOT_FOUND
               .withDescription("Catalogue with the given Catalogue Id not found");
       responseObserver.onError(status.asRuntimeException());
       return;
@@ -59,7 +65,7 @@ public class CatalogueService extends CatalogueServiceGrpc.CatalogueServiceImplB
               .ifPresent(responseObserver::onNext);
       responseObserver.onCompleted();
     } else {
-      Status status = Status.NOT_FOUND
+      final Status status = Status.NOT_FOUND
               .withDescription("Catalogue with the given Catalogue Id not found");
       responseObserver.onError(status.asRuntimeException());
       return;

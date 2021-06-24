@@ -28,6 +28,9 @@ public class ItemEntity {
    */
   private BigDecimal tax;
 
+  /**
+   * Constructor.
+   */
   public ItemEntity() {
     name = "";
     type = Type.UNKNOWN;

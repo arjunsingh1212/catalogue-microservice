@@ -19,8 +19,20 @@ public class Item {
     //default Empty constructor req. by JPA.
   }
 
-  public Item(final String name, final BigDecimal price, final int quantity,
-              final String type, final String itemId, final String catalogueId) {
+  /**
+   * Constructor.
+   * @param name name of item
+   * @param price price of item
+   * @param quantity quantity of itme
+   * @param type type of item
+   * @param itemId id of item
+   * @param catalogueId id of catalogue of item
+   */
+  public Item(
+          final String name,
+          final BigDecimal price,
+          final int quantity, final String type,
+          final String itemId, final String catalogueId) {
     this.itemId = itemId;
     this.catalogueId = catalogueId;
     this.name = name;

@@ -14,14 +14,34 @@ import java.util.concurrent.TimeUnit;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.arjun.assignment1.Type;
-import org.arjun.cataloguemicroservice.*;
+import org.arjun.cataloguemicroservice.Catalogue;
+import org.arjun.cataloguemicroservice.CatalogueServiceGrpc;
+import org.arjun.cataloguemicroservice.CreateCatalogueRequest;
+import org.arjun.cataloguemicroservice.CreateItemRequest;
+import org.arjun.cataloguemicroservice.CreateItemStreamRequest;
+import org.arjun.cataloguemicroservice.CreateItemStreamResponse;
+import org.arjun.cataloguemicroservice.CreateUserRequest;
+import org.arjun.cataloguemicroservice.DeleteCatalogueRequest;
+import org.arjun.cataloguemicroservice.DeleteItemRequest;
+import org.arjun.cataloguemicroservice.DeleteUserRequest;
+import org.arjun.cataloguemicroservice.GetCatalogueRequest;
+import org.arjun.cataloguemicroservice.GetCatalogueStreamRequest;
+import org.arjun.cataloguemicroservice.GetItemRequest;
+import org.arjun.cataloguemicroservice.GetItemStreamRequest;
+import org.arjun.cataloguemicroservice.GetUserRequest;
+import org.arjun.cataloguemicroservice.GetUserStreamRequest;
+import org.arjun.cataloguemicroservice.Item;
+import org.arjun.cataloguemicroservice.ItemServiceGrpc;
+import org.arjun.cataloguemicroservice.User;
+import org.arjun.cataloguemicroservice.UserServiceGrpc;
 
 @SuppressWarnings({"PMD.GuardLogStatement",
-        "PMD.UnusedPrivateMethod","LinguisticNaming"})
-public class GRPCClient {
+        "PMD.UnusedPrivateMethod","PMD.LinguisticNaming",
+        "PMD.ExcessiveImports"})
+public class GrpcClient {
 
   private final Logger logger =
-          LogManager.getLogger(GRPCClient.class);
+          LogManager.getLogger(GrpcClient.class);
 
   private final ManagedChannel channel =
           ManagedChannelBuilder.forAddress(
@@ -47,7 +67,7 @@ public class GRPCClient {
         logger.info("Response: " + response.toString());
       }
     } catch (Exception except) {
-      Status status = Status.fromThrowable(except);
+      final Status status = Status.fromThrowable(except);
       logger.error(status.getCode() + " : " + status.getDescription());
     }
   }
@@ -234,34 +254,38 @@ public class GRPCClient {
     });
   }
 
-
+  /**
+   * Main method for client.
+   */
   public static void main(final String[] args) {
-    final GRPCClient client = new GRPCClient();
-//    client.createUser("Partner X");
-//    client.deleteUser("ae38f97c-5532-48e7-89ee-d6f70aad752a");
-    client.getUser("00ed1cba-b9f2-46fc-b662-4ff30955f470");
-//    client.getUserStream();
-//
-//    client.createCatalogue("3660ada0-f532-44f5-b28c-1ca573fc970b",
-//            "Books","This catalogue contains the books");
-//
-//    client.deleteCatalogue("c7fd4585-8c5f-4c88-9197-eb4f97c491bd");
-//
-//    client.getCatalogue("142e7a2b-a847-4e81-b7eb-014ee52efe64");
-//    client.getCatalogueStream2();
-//
-//    client.createItem("Note Book",BigDecimal.valueOf(40.50),2,Type.RAW,
-//            "f7794a0b-8a34-449b-a5b1-af3609aa31c6");
-//
-//    client.createItemStream();
-//
-//    client.deleteItem("99eaf317-c27a-43d2-957f-8ad11d8e2a38");
-//
-//    client.getItem("8c0e7de8-1156-41f2-b582-d756785927dd",
-//            "f7794a0b-8a34-449b-a5b1-af3609aa31c6");
-//
-//    client.getItemStreamUsingUserId("3660ada0-f532-44f5-b28c-1ca573fc970b");
-//    client.getItemStreamUsingCatalogueId("f7794a0b-8a34-449b-a5b1-af3609aa31c6");
-//    client.getItemStreamAll();
+    final GrpcClient client = new GrpcClient();
+
+    //client.createUser("Partner X");
+    //client.deleteUser("ae38f97c-5532-48e7-89ee-d6f70aad752a");
+    //client.getUser("00ed1cba-b9f2-46fc-b662-4ff30955f470");
+    //client.getUserStream();
+    //
+    //client.createCatalogue("3660ada0-f532-44f5-b28c-1ca573fc970b",
+    //        "Books","This catalogue contains the books");
+    //
+    //client.deleteCatalogue("c7fd4585-8c5f-4c88-9197-eb4f97c491bd");
+    //
+    //client.getCatalogue("142e7a2b-a847-4e81-b7eb-014ee52efe64");
+    //client.getCatalogueStream2();
+    //
+    //client.createItem("Note Book",BigDecimal.valueOf(40.50),2,Type.RAW,
+    //            "f7794a0b-8a34-449b-a5b1-af3609aa31c6");
+    //
+    //client.createItemStream();
+    //
+    //client.deleteItem("99eaf317-c27a-43d2-957f-8ad11d8e2a38");
+    //
+    //client.getItem("8c0e7de8-1156-41f2-b582-d756785927dd",
+    //            "f7794a0b-8a34-449b-a5b1-af3609aa31c6");
+    //
+    //client.getItemStreamUsingUserId("3660ada0-f532-44f5-b28c-1ca573fc970b");
+    //client.getItemStreamUsingCatalogueId("f7794a0b-8a34-449b-a5b1-af3609aa31c6");
+    client.getItemStreamAll();
+
   }
 }
