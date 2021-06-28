@@ -261,9 +261,9 @@ public class GrpcClient {
     final GrpcClient client = new GrpcClient();
 
     //client.createUser("Partner X");
-    //client.deleteUser("ae38f97c-5532-48e7-89ee-d6f70aad752a");
+    //client.deleteUser("413a8992-3831-4b7f-a255-5c29a8223a52");
     //client.getUser("00ed1cba-b9f2-46fc-b662-4ff30955f470");
-    //client.getUserStream();
+    client.getUserStream();
     //
     //client.createCatalogue("3660ada0-f532-44f5-b28c-1ca573fc970b",
     //        "Books","This catalogue contains the books");
@@ -285,7 +285,7 @@ public class GrpcClient {
     //
     //client.getItemStreamUsingUserId("3660ada0-f532-44f5-b28c-1ca573fc970b");
     //client.getItemStreamUsingCatalogueId("f7794a0b-8a34-449b-a5b1-af3609aa31c6");
-    client.getItemStreamAll();
+    //client.getItemStreamAll();
 
   }
 }

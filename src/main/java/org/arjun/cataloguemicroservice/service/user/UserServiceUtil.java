@@ -1,10 +1,13 @@
 package org.arjun.cataloguemicroservice.service.user;
 
 import java.util.List;
-import java.util.Optional;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.locks.ReadWriteLock;
+import java.util.concurrent.locks.ReentrantReadWriteLock;
 import org.arjun.cataloguemicroservice.entity.User;
 import org.arjun.cataloguemicroservice.repository.UserRepo;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 
 
@@ -15,9 +18,17 @@ public class UserServiceUtil implements
   @Autowired
   private UserRepo userRepo;
 
+  private final ReadWriteLock lock = new ReentrantReadWriteLock();
+
+  @Async("threadPoolExecutor")
   @Override
-  public User createUserService(final User userInstance) {
-    return userRepo.save(userInstance);
+  public CompletableFuture<User> createUserService(final User userInstance) {
+    lock.writeLock().lock();
+    try {
+      return CompletableFuture.completedFuture(userRepo.save(userInstance));
+    } finally {
+      lock.writeLock().unlock();
+    }
   }
 
   @Override
@@ -25,14 +36,26 @@ public class UserServiceUtil implements
     userRepo.deleteById(userId);
   }
 
+  @Async("threadPoolExecutor")
   @Override
-  public Optional<User> getUserService(final String userId) {
-    return userRepo.findById(userId);
+  public CompletableFuture<User> getUserService(final String userId) {
+    lock.readLock().lock();
+    try {
+      return CompletableFuture.completedFuture(userRepo.findById(userId).get());
+    } finally {
+      lock.readLock().unlock();
+    }
   }
 
+  @Async("threadPoolExecutor")
   @Override
-  public List<User> getUserStreamService() {
-    return userRepo.findAll();
+  public CompletableFuture<List<User>> getUserStreamService() {
+    lock.readLock().lock();
+    try {
+      return CompletableFuture.completedFuture(userRepo.findAll());
+    } finally {
+      lock.readLock().unlock();
+    }
   }
 
   @Override

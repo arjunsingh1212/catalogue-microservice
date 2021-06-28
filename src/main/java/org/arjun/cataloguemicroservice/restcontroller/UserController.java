@@ -1,6 +1,7 @@
 package org.arjun.cataloguemicroservice.restcontroller;
 
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
 import org.arjun.cataloguemicroservice.entity.User;
 import org.arjun.cataloguemicroservice.service.user.UserServiceUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,7 +18,7 @@ public class UserController {
   private UserServiceUtil userServiceUtil;
 
   @PostMapping("/api/users")
-  public User createUser(final User user) {
+  public CompletableFuture<User> createUser(final User user) {
     return userServiceUtil.createUserService(user);
   }
 
@@ -27,12 +28,12 @@ public class UserController {
   }
 
   @GetMapping("/api/users/{userId}")
-  public User getUser(@PathVariable("userId") final String userId) {
-    return userServiceUtil.getUserService(userId).get();
+  public CompletableFuture<User> getUser(@PathVariable("userId") final String userId) {
+    return userServiceUtil.getUserService(userId);
   }
 
   @GetMapping("/api/users")
-  public List<User> getUserStream() {
+  public CompletableFuture<List<User>> getUserStream() {
     return userServiceUtil.getUserStreamService();
   }
 

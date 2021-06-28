@@ -1,6 +1,7 @@
 package org.arjun.cataloguemicroservice.restcontroller;
 
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
 import org.arjun.cataloguemicroservice.entity.Item;
 import org.arjun.cataloguemicroservice.service.item.ItemServiceUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,7 +19,7 @@ public class ItemController {
   private ItemServiceUtil itemServiceUtil;
 
   @PostMapping("/api/catalogues/{catalogueId}/items")
-  public Item createItem(final Item item) {
+  public CompletableFuture<Item> createItem(final Item item) {
     return itemServiceUtil.createItemService(item);
   }
 
@@ -28,23 +29,25 @@ public class ItemController {
   }
 
   @GetMapping("/api/catalogues/{catalogueId}/items/{itemId}")
-  public Item getItemByCatalogueIdAndItemId(@PathVariable("catalogueId") final String catalogueId,
-                      @PathVariable("itemId") final String itemId) {
+  public CompletableFuture<Item> getItemByCatalogueIdAndItemId(
+          @PathVariable("catalogueId") final String catalogueId,
+          @PathVariable("itemId") final String itemId) {
     return itemServiceUtil.getItemService(itemId, catalogueId);
   }
 
   @GetMapping("/api/items")
-  public List<Item> getItemStreamAll() {
+  public CompletableFuture<List<Item>> getItemStreamAll() {
     return itemServiceUtil.getItemStreamAll();
   }
 
   @GetMapping("/api/items-user/{userId}")
-  public List<Item> getItemStreamByUserId(@PathVariable("userId") final String userId) {
+  public CompletableFuture<List<Item>> getItemStreamByUserId(
+          @PathVariable("userId") final String userId) {
     return itemServiceUtil.getItemStreamByUserId(userId);
   }
 
   @GetMapping("/api/catalogues/{catalogueId}/items")
-  public List<Item> getItemStreamByCatalogueId(
+  public CompletableFuture<List<Item>> getItemStreamByCatalogueId(
           @PathVariable("catalogueId") final String catalogueId) {
     return itemServiceUtil.getItemStreamByCatalogueId(catalogueId);
   }

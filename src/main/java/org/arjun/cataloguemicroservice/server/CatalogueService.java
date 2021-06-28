@@ -3,7 +3,11 @@ package org.arjun.cataloguemicroservice.server;
 import com.google.protobuf.Empty;
 import io.grpc.Status;
 import io.grpc.stub.StreamObserver;
-import java.util.Optional;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutionException;
+import java.util.stream.StreamSupport;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.arjun.cataloguemicroservice.Catalogue;
 import org.arjun.cataloguemicroservice.CatalogueServiceGrpc;
 import org.arjun.cataloguemicroservice.CatalogueStream;
@@ -25,6 +29,9 @@ public class CatalogueService extends CatalogueServiceGrpc.CatalogueServiceImplB
   @Autowired
   private CatalogueServiceUtil catalogueServiceUtil;
 
+  private final Logger logger =
+          LogManager.getLogger(CatalogueService.class);
+
   @Override
   public void createCatalogue(final CreateCatalogueRequest request,
                               final StreamObserver<Catalogue> responseObserver) {
@@ -35,8 +42,12 @@ public class CatalogueService extends CatalogueServiceGrpc.CatalogueServiceImplB
       responseObserver.onError(status.asRuntimeException());
       return;
     }
-    responseObserver.onNext(catalogueServiceUtil.toProto(catalogueServiceUtil
-            .createCatalogueService(converter.toCatalogue(request))));
+    try {
+      responseObserver.onNext(catalogueServiceUtil.toProto(catalogueServiceUtil
+              .createCatalogueService(converter.toCatalogue(request)).get()));
+    } catch (InterruptedException | ExecutionException e) {
+      logger.info(e.getMessage());
+    }
     responseObserver.onCompleted();
   }
 
@@ -59,10 +70,13 @@ public class CatalogueService extends CatalogueServiceGrpc.CatalogueServiceImplB
   public void getCatalogue(final GetCatalogueRequest request,
                            final StreamObserver<Catalogue> responseObserver) {
     if (catalogueServiceUtil.checkCatalogueExistenceById(request.getCatalogueId())) {
-      final Optional<org.arjun.cataloguemicroservice.entity.Catalogue> entry =
+      final CompletableFuture<org.arjun.cataloguemicroservice.entity.Catalogue> entry =
               catalogueServiceUtil.getCatalogueService(request.getCatalogueId());
-      entry.map(e -> catalogueServiceUtil.toProto(e))
-              .ifPresent(responseObserver::onNext);
+      try {
+        responseObserver.onNext(catalogueServiceUtil.toProto(entry.get()));
+      } catch (InterruptedException | ExecutionException e) {
+        logger.info(e.getMessage());
+      }
       responseObserver.onCompleted();
     } else {
       final Status status = Status.NOT_FOUND
@@ -76,16 +90,25 @@ public class CatalogueService extends CatalogueServiceGrpc.CatalogueServiceImplB
   public void getCatalogueStream(final GetCatalogueStreamRequest request,
                                  final StreamObserver<CatalogueStream> responseObserver) {
     if (request.getUserId().isBlank()) {
-      catalogueServiceUtil.getCatalogueStreamAll().forEach(ele -> {
-        responseObserver.onNext(CatalogueStream.newBuilder()
-                .setCatalogue(catalogueServiceUtil.toProto(ele)).build());
-      });
+      try {
+        StreamSupport.stream(catalogueServiceUtil.getCatalogueStreamAll().get()
+                .spliterator(), false).forEach(e -> {
+                  responseObserver.onNext(CatalogueStream.newBuilder()
+                      .setCatalogue(catalogueServiceUtil.toProto(e)).build());
+                });
+      } catch (InterruptedException | ExecutionException e) {
+        logger.info(e.getMessage());
+      }
     } else {
-      catalogueServiceUtil.getCatalogueStreamByUserId(request.getUserId())
-              .forEach(ele -> {
-                responseObserver.onNext(CatalogueStream.newBuilder()
-                        .setCatalogue(catalogueServiceUtil.toProto(ele)).build());
-              });
+      try {
+        StreamSupport.stream(catalogueServiceUtil.getCatalogueStreamByUserId(
+                request.getUserId()).get().spliterator(), false).forEach(e -> {
+                  responseObserver.onNext(CatalogueStream.newBuilder()
+                      .setCatalogue(catalogueServiceUtil.toProto(e)).build());
+                });
+      } catch (InterruptedException | ExecutionException e) {
+        logger.info(e.getMessage());
+      }
     }
     responseObserver.onCompleted();
   }

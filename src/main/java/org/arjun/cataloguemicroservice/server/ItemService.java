@@ -3,6 +3,7 @@ package org.arjun.cataloguemicroservice.server;
 import com.google.protobuf.Empty;
 import io.grpc.Status;
 import io.grpc.stub.StreamObserver;
+import java.util.concurrent.ExecutionException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.arjun.cataloguemicroservice.CreateItemRequest;
@@ -93,8 +94,13 @@ public class ItemService extends ItemServiceGrpc.ItemServiceImplBase {
   @Override
   public void getItem(final GetItemRequest request, final StreamObserver<Item> responseObserver) {
     if (itemServiceUtil.checkItemExistenceById(request.getItemId())) {
-      final org.arjun.cataloguemicroservice.entity.Item item =
-              itemServiceUtil.getItemService(request.getItemId(), request.getParentCatalogueId());
+      org.arjun.cataloguemicroservice.entity.Item item = null;
+      try {
+        item = itemServiceUtil.getItemService(request.getItemId(),
+                request.getParentCatalogueId()).get();
+      } catch (InterruptedException | ExecutionException e) {
+        logger.info(e.getMessage());
+      }
       responseObserver.onNext(itemServiceUtil.toProto(item));
       responseObserver.onCompleted();
     } else {
@@ -109,22 +115,31 @@ public class ItemService extends ItemServiceGrpc.ItemServiceImplBase {
   public void getItemStream(final GetItemStreamRequest request,
                             final StreamObserver<ItemStream> responseObserver) {
     if (request.getCatalogueId().isBlank() && request.getUserId().isBlank()) {
-      itemServiceUtil.getItemStreamAll().forEach(ele -> {
-        responseObserver.onNext(ItemStream.newBuilder()
-                .setItem(itemServiceUtil.toProto(ele)).build());
-      });
+      try {
+        itemServiceUtil.getItemStreamAll().get()
+                .forEach(e -> responseObserver.onNext(ItemStream.newBuilder()
+                        .setItem(itemServiceUtil.toProto(e)).build()));
+      } catch (InterruptedException | ExecutionException e) {
+        logger.info(e.getMessage());
+      }
       responseObserver.onCompleted();
     } else if (request.getCatalogueId().isBlank()) {
-      itemServiceUtil.getItemStreamByUserId(request.getUserId()).forEach(ele -> {
-        responseObserver.onNext(ItemStream.newBuilder()
-                .setItem(itemServiceUtil.toProto(ele)).build());
-      });
+      try {
+        itemServiceUtil.getItemStreamByUserId(request.getUserId()).get()
+                .forEach(e -> responseObserver.onNext(ItemStream.newBuilder()
+                        .setItem(itemServiceUtil.toProto(e)).build()));
+      } catch (InterruptedException | ExecutionException e) {
+        logger.info(e.getMessage());
+      }
       responseObserver.onCompleted();
     } else {
-      itemServiceUtil.getItemStreamByCatalogueId(request.getCatalogueId()).forEach(e -> {
-        responseObserver.onNext(ItemStream.newBuilder()
-                .setItem(itemServiceUtil.toProto(e)).build());
-      });
+      try {
+        itemServiceUtil.getItemStreamByCatalogueId(request.getCatalogueId()).get()
+                .forEach(e -> responseObserver.onNext(ItemStream.newBuilder()
+                        .setItem(itemServiceUtil.toProto(e)).build()));
+      } catch (InterruptedException | ExecutionException e) {
+        logger.info(e.getMessage());
+      }
       responseObserver.onCompleted();
     }
   }

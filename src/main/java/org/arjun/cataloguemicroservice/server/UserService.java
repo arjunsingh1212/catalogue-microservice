@@ -3,7 +3,11 @@ package org.arjun.cataloguemicroservice.server;
 import com.google.protobuf.Empty;
 import io.grpc.Status;
 import io.grpc.stub.StreamObserver;
-import java.util.Optional;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutionException;
+import java.util.stream.StreamSupport;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.arjun.cataloguemicroservice.CreateUserRequest;
 import org.arjun.cataloguemicroservice.DeleteUserRequest;
 import org.arjun.cataloguemicroservice.GetUserRequest;
@@ -26,6 +30,9 @@ public class UserService extends UserServiceGrpc.UserServiceImplBase {
   @Autowired
   private Converter converter;
 
+  private final Logger logger =
+          LogManager.getLogger(UserService.class);
+
   @Override
   public void createUser(final CreateUserRequest request,
                          final StreamObserver<User> responseObserver) {
@@ -35,8 +42,12 @@ public class UserService extends UserServiceGrpc.UserServiceImplBase {
       responseObserver.onError(status.asRuntimeException());
       return;
     }
-    responseObserver.onNext(userServiceUtil.toProto(userServiceUtil.createUserService(
-            converter.toUser(request))));
+    try {
+      responseObserver.onNext(userServiceUtil.toProto(userServiceUtil.createUserService(
+              converter.toUser(request)).get()));
+    } catch (InterruptedException | ExecutionException e) {
+      logger.info(e.getMessage());
+    }
     responseObserver.onCompleted();
   }
 
@@ -58,10 +69,13 @@ public class UserService extends UserServiceGrpc.UserServiceImplBase {
   @Override
   public void getUser(final GetUserRequest request, final StreamObserver<User> responseObserver) {
     if (userServiceUtil.checkUserExistenceById(request.getUserId())) {
-      final Optional<org.arjun.cataloguemicroservice.entity.User> entry =
+      final CompletableFuture<org.arjun.cataloguemicroservice.entity.User> entry =
               userServiceUtil.getUserService(request.getUserId());
-      entry.map(e -> userServiceUtil.toProto(e))
-              .ifPresent(responseObserver::onNext);
+      try {
+        responseObserver.onNext(userServiceUtil.toProto(entry.get()));
+      } catch (InterruptedException | ExecutionException e) {
+        logger.info(e.getMessage());
+      }
       responseObserver.onCompleted();
     } else {
       final Status status = Status.NOT_FOUND
@@ -74,9 +88,15 @@ public class UserService extends UserServiceGrpc.UserServiceImplBase {
   @Override
   public void getUserStream(final GetUserStreamRequest request, final StreamObserver<UserStream>
           responseObserver) {
-    userServiceUtil.getUserStreamService().forEach(e -> {
-      responseObserver.onNext(UserStream.newBuilder().setUser(userServiceUtil.toProto(e)).build());
-    });
+    try {
+      StreamSupport.stream(userServiceUtil.getUserStreamService().get()
+              .spliterator(), false).forEach(e -> {
+                responseObserver.onNext(UserStream.newBuilder()
+                        .setUser(userServiceUtil.toProto(e)).build());
+              });
+    } catch (InterruptedException | ExecutionException e) {
+      logger.info(e.getMessage());
+    }
     responseObserver.onCompleted();
   }
 }

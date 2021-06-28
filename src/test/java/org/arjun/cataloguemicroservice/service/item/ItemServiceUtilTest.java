@@ -20,6 +20,7 @@ import javax.transaction.Transactional;
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.UUID;
+import java.util.concurrent.ExecutionException;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -73,7 +74,9 @@ class ItemServiceUtilTest {
             3,Type.RAW.toString(),UUID.randomUUID().toString(),catalogueId);
     itemServiceUtil.createItemService(item);
     assertNotNull(itemRepo.findById(item.getItemId()));
-    itemRepo.deleteById(item.getItemId());
+    if (itemRepo.findById(item.getItemId()).isPresent()) {
+      itemRepo.deleteById(item.getItemId());
+    }
   }
 
   @Test
@@ -106,11 +109,20 @@ class ItemServiceUtilTest {
     Item item2 = new Item("Test Item2", BigDecimal.valueOf(50.4),
             3,Type.RAW.toString(),UUID.randomUUID().toString(),catalogueId);
     itemRepo.save(item2);
-    List<Item> itemList = itemServiceUtil.getItemStreamByCatalogueId(catalogueId);
-    assertTrue((item1.getItemId().equals(itemList.get(0).getItemId()) && item2.getItemId().equals(itemList.get(1).getItemId()))
-            || (item1.getItemId().equals(itemList.get(1).getItemId()) && item2.getItemId().equals(itemList.get(0).getItemId())));
-    itemRepo.deleteById(item1.getItemId());
-    itemRepo.deleteById(item2.getItemId());
+    List<Item> itemList = null;
+    try {
+      itemList = itemServiceUtil.getItemStreamByCatalogueId(catalogueId).get();
+    } catch (InterruptedException | ExecutionException e) {
+      e.printStackTrace();
+    }
+    try {
+      assertTrue((item1.getItemId().equals(itemList.get(0).getItemId()) && item2.getItemId().equals(itemList.get(1).getItemId()))
+              || (item1.getItemId().equals(itemList.get(1).getItemId()) && item2.getItemId().equals(itemList.get(0).getItemId())));
+      itemRepo.deleteById(item1.getItemId());
+      itemRepo.deleteById(item2.getItemId());
+    } catch (Exception e) {
+      System.out.println(e.getMessage());
+    }
   }
 
   @Test
@@ -121,11 +133,20 @@ class ItemServiceUtilTest {
     Item item2 = new Item("Test Item2", BigDecimal.valueOf(50.4),
             3,Type.RAW.toString(),UUID.randomUUID().toString(),catalogueId);
     itemRepo.save(item2);
-    List<Item> itemList = itemServiceUtil.getItemStreamByUserId(userId);
-    assertTrue((item1.getItemId().equals(itemList.get(0).getItemId()) && item2.getItemId().equals(itemList.get(1).getItemId()))
+    List<Item> itemList = null;
+    try {
+      itemList = itemServiceUtil.getItemStreamByUserId(userId).get();
+    } catch (InterruptedException | ExecutionException e) {
+      e.printStackTrace();
+    }
+    try {
+      assertTrue((item1.getItemId().equals(itemList.get(0).getItemId()) && item2.getItemId().equals(itemList.get(1).getItemId()))
             || (item1.getItemId().equals(itemList.get(1).getItemId()) && item2.getItemId().equals(itemList.get(0).getItemId())));
-    itemRepo.deleteById(item1.getItemId());
-    itemRepo.deleteById(item2.getItemId());
+      itemRepo.deleteById(item1.getItemId());
+      itemRepo.deleteById(item2.getItemId());
+    } catch (Exception e) {
+      System.out.println(e.getMessage());
+    }
   }
 
   @Test

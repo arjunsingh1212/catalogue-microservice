@@ -2,10 +2,14 @@ package org.arjun.cataloguemicroservice.service.item;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.locks.ReadWriteLock;
+import java.util.concurrent.locks.ReentrantReadWriteLock;
 import org.arjun.cataloguemicroservice.entity.Item;
 import org.arjun.cataloguemicroservice.repository.CatalogueRepo;
 import org.arjun.cataloguemicroservice.repository.ItemRepo;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 
 
@@ -18,9 +22,18 @@ public class ItemServiceUtil implements org.arjun.cataloguemicroservice.service.
   @Autowired
   private CatalogueRepo catalogueRepo;
 
+  private final ReadWriteLock lock = new ReentrantReadWriteLock();
+
+
+  @Async("threadPoolExecutor")
   @Override
-  public Item createItemService(final Item item) {
-    return itemRepo.save(item);
+  public CompletableFuture<Item> createItemService(final Item item) {
+    lock.writeLock().lock();
+    try {
+      return CompletableFuture.completedFuture(itemRepo.save(item));
+    } finally {
+      lock.writeLock().unlock();
+    }
   }
 
   @Override
@@ -28,30 +41,46 @@ public class ItemServiceUtil implements org.arjun.cataloguemicroservice.service.
     itemRepo.deleteById(itemId);
   }
 
+  @Async("threadPoolExecutor")
   @Override
-  public Item getItemService(final String itemId, final String parentCatalogueId) {
-    return itemRepo.findByItemIdAndCatalogueId(itemId,parentCatalogueId);
+  public CompletableFuture<Item> getItemService(final String itemId,
+                                                final String parentCatalogueId) {
+    lock.readLock().lock();
+    try {
+      return CompletableFuture.completedFuture(
+              itemRepo.findByItemIdAndCatalogueId(itemId, parentCatalogueId));
+    } finally {
+      lock.readLock().unlock();
+    }
   }
 
+  @Async("threadPoolExecutor")
   @Override
-  public List<Item> getItemStreamByCatalogueId(final String catalogueId) {
-    return itemRepo.findByCatalogueId(catalogueId);
+  public CompletableFuture<List<Item>> getItemStreamByCatalogueId(final String catalogueId) {
+    lock.readLock().lock();
+    try {
+      return CompletableFuture.completedFuture(itemRepo.findByCatalogueId(catalogueId));
+    } finally {
+      lock.readLock().unlock();
+    }
   }
 
+  @Async("threadPoolExecutor")
   @Override
-  public List<Item> getItemStreamByUserId(final String userId) {
+  public CompletableFuture<List<Item>> getItemStreamByUserId(final String userId) {
     final List<Item> itemList = new ArrayList<>();
     catalogueRepo.findByUserId(userId).forEach(e -> {
       itemRepo.findByCatalogueId(e.getCatalogueId()).forEach(ele -> {
         itemList.add(ele);
       });
     });
-    return itemList;
+    return CompletableFuture.completedFuture(itemList);
   }
 
+  @Async("threadPoolExecutor")
   @Override
-  public List<Item> getItemStreamAll() {
-    return itemRepo.findAll();
+  public CompletableFuture<List<Item>> getItemStreamAll() {
+    return CompletableFuture.completedFuture(itemRepo.findAll());
   }
 
   @Override

@@ -1,10 +1,13 @@
 package org.arjun.cataloguemicroservice.service.catalogue;
 
 import java.util.List;
-import java.util.Optional;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.locks.ReadWriteLock;
+import java.util.concurrent.locks.ReentrantReadWriteLock;
 import org.arjun.cataloguemicroservice.entity.Catalogue;
 import org.arjun.cataloguemicroservice.repository.CatalogueRepo;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 
 
@@ -15,9 +18,17 @@ public class CatalogueServiceUtil
   @Autowired
   private CatalogueRepo catalogueRepo;
 
+  private final ReadWriteLock lock = new ReentrantReadWriteLock();
+
+  @Async("threadPoolExecutor")
   @Override
-  public Catalogue createCatalogueService(final Catalogue catalogue) {
-    return catalogueRepo.save(catalogue);
+  public CompletableFuture<Catalogue> createCatalogueService(final Catalogue catalogue) {
+    lock.writeLock().lock();
+    try {
+      return CompletableFuture.completedFuture(catalogueRepo.save(catalogue));
+    } finally {
+      lock.writeLock().unlock();
+    }
   }
 
   @Override
@@ -25,19 +36,37 @@ public class CatalogueServiceUtil
     catalogueRepo.deleteById(catalogueId);
   }
 
+  @Async("threadPoolExecutor")
   @Override
-  public Optional<Catalogue> getCatalogueService(final String catalogueId) {
-    return catalogueRepo.findById(catalogueId);
+  public CompletableFuture<Catalogue> getCatalogueService(final String catalogueId) {
+    lock.readLock().lock();
+    try {
+      return CompletableFuture.completedFuture(catalogueRepo.findById(catalogueId).get());
+    } finally {
+      lock.readLock().unlock();
+    }
   }
 
+  @Async("threadPoolExecutor")
   @Override
-  public List<Catalogue> getCatalogueStreamByUserId(final String userId) {
-    return catalogueRepo.findByUserId(userId);
+  public CompletableFuture<List<Catalogue>> getCatalogueStreamByUserId(final String userId) {
+    lock.readLock().lock();
+    try {
+      return CompletableFuture.completedFuture(catalogueRepo.findByUserId(userId));
+    } finally {
+      lock.readLock().unlock();
+    }
   }
 
+  @Async("threadPoolExecutor")
   @Override
-  public List<Catalogue> getCatalogueStreamAll() {
-    return catalogueRepo.findAll();
+  public CompletableFuture<List<Catalogue>> getCatalogueStreamAll() {
+    lock.readLock().lock();
+    try {
+      return CompletableFuture.completedFuture(catalogueRepo.findAll());
+    } finally {
+      lock.readLock().unlock();
+    }
   }
 
   @Override

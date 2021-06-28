@@ -11,11 +11,10 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-
 import javax.transaction.Transactional;
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
+import java.util.concurrent.ExecutionException;
 
 import static org.junit.Assert.*;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -43,7 +42,7 @@ class CatalogueServiceUtilTest {
 
   @BeforeEach
   void createUser() {
-    user = new User(UUID.randomUUID().toString(),"Partner ABC");
+    user = new User(UUID.randomUUID().toString(), "Partner ABC");
     userRepo.save(user);
     userId = userRepo.findByUserName("Partner ABC").get(0).getUserId();
   }
@@ -55,25 +54,28 @@ class CatalogueServiceUtilTest {
 
   @Test
   void createCatalogueService() {
-    Catalogue catalogue = new Catalogue();
-    catalogue.setCatalogueId(UUID.randomUUID().toString());
-    catalogue.setUserId(userId);
-    catalogue.setCatalogueName("Catalogue ABC");
-    catalogue.setDescription("Test Catalogue");
-    catalogueServiceUtil.createCatalogueService(catalogue);
-    assertNotNull(catalogueRepo.findByUserIdAndCatalogueName(
-            userId,"Catalogue ABC"));
+    Catalogue catalogue = new Catalogue(
+            UUID.randomUUID().toString(), userId,
+            "Catalogue ABCDEFGHIJKL", "Test Catalogue");
+    try {
+      Catalogue createdCatalogue = catalogueServiceUtil.createCatalogueService(catalogue).get();
+    } catch (InterruptedException | ExecutionException e) {
+      e.printStackTrace();
+    }
     String catalogueId = catalogue.getCatalogueId();
-    catalogueRepo.deleteById(catalogueId);
+    assertNotNull(catalogueRepo.findById(catalogueId));
+    if (catalogueRepo.findById(catalogueId).isPresent()) {
+      catalogueRepo.deleteById(catalogueId);
+    }
   }
 
   @Test
   void deleteCatalogueService() {
     Catalogue catalogue = new Catalogue(
-            UUID.randomUUID().toString(),userId,"Catalogue ABC","Test Catalogue");
+            UUID.randomUUID().toString(), userId, "Catalogue ABC", "Test Catalogue");
     catalogueRepo.save(catalogue);
     boolean before = catalogueServiceUtil.checkCatalogueExistenceById(catalogue.getCatalogueId());
-    Catalogue queriedCatalogue = catalogueRepo.findByUserIdAndCatalogueName(userId,"Catalogue ABC");
+    Catalogue queriedCatalogue = catalogueRepo.findByUserIdAndCatalogueName(userId, "Catalogue ABC");
     catalogueServiceUtil.deleteCatalogueService(queriedCatalogue.getCatalogueId());
     boolean after = catalogueServiceUtil.checkCatalogueExistenceById(catalogue.getCatalogueId());
     assertTrue(before && !after);
@@ -82,9 +84,9 @@ class CatalogueServiceUtilTest {
   @Test
   void getCatalogueService() {
     Catalogue catalogue = new Catalogue(
-            UUID.randomUUID().toString(),userId,"Catalogue ABC","Test Catalogue");
+            UUID.randomUUID().toString(), userId, "Catalogue ABC", "Test Catalogue");
     catalogueRepo.save(catalogue);
-    Catalogue queriedCatalogue = catalogueRepo.findByUserIdAndCatalogueName(userId,"Catalogue ABC");
+    Catalogue queriedCatalogue = catalogueRepo.findByUserIdAndCatalogueName(userId, "Catalogue ABC");
     assertSame(queriedCatalogue.getCatalogueId(), catalogue.getCatalogueId());
     catalogueRepo.deleteById(catalogue.getCatalogueId());
   }
@@ -92,47 +94,56 @@ class CatalogueServiceUtilTest {
   @Test
   void getCatalogueStreamByUserId() {
     Catalogue catalogue1 = new Catalogue(
-            UUID.randomUUID().toString(),userId,"Catalogue ABCD","Test Catalogue");
+            UUID.randomUUID().toString(), userId, "Catalogue ABCD", "Test Catalogue");
     catalogueRepo.save(catalogue1);
     Catalogue catalogue2 = new Catalogue(
-            UUID.randomUUID().toString(),userId,"Catalogue ABCE","Test Catalogue");
+            UUID.randomUUID().toString(), userId, "Catalogue ABCE", "Test Catalogue");
     catalogueRepo.save(catalogue2);
-    List<Catalogue> catalogueList = catalogueServiceUtil.getCatalogueStreamByUserId(userId);
-    assertEquals(catalogue1.getCatalogueId(),catalogueList.get(0).getCatalogueId());
-    Assertions.assertEquals(catalogue2.getCatalogueId(),catalogueList.get(1).getCatalogueId());
-    assertTrue((catalogue1.getCatalogueId().equals(catalogueList.get(0).getCatalogueId()) && catalogue2.getCatalogueId().equals(catalogueList.get(1).getCatalogueId()))
-            || (catalogue1.getCatalogueId().equals(catalogueList.get(1).getCatalogueId()) && catalogue2.getCatalogueId().equals(catalogueList.get(0).getCatalogueId())));
-    catalogueRepo.deleteById(catalogue1.getCatalogueId());
-    catalogueRepo.deleteById(catalogue2.getCatalogueId());
+    List<Catalogue> catalogueList = null;
+    try {
+      catalogueList = catalogueServiceUtil.getCatalogueStreamByUserId(userId).get();
+    } catch (InterruptedException | ExecutionException e) {
+      e.printStackTrace();
+    }
+    try {
+      assertEquals(catalogue1.getCatalogueId(), catalogueList.get(0).getCatalogueId());
+      Assertions.assertEquals(catalogue2.getCatalogueId(), catalogueList.get(1).getCatalogueId());
+      assertTrue((catalogue1.getCatalogueId().equals(catalogueList.get(0).getCatalogueId()) && catalogue2.getCatalogueId().equals(catalogueList.get(1).getCatalogueId()))
+              || (catalogue1.getCatalogueId().equals(catalogueList.get(1).getCatalogueId()) && catalogue2.getCatalogueId().equals(catalogueList.get(0).getCatalogueId())));
+      catalogueRepo.deleteById(catalogue1.getCatalogueId());
+      catalogueRepo.deleteById(catalogue2.getCatalogueId());
+    } catch (Exception e) {
+      System.out.println(e.getMessage());
+    }
   }
 
   @Test
   void toProto() {
     Catalogue catalogue = new Catalogue(
-            UUID.randomUUID().toString(),userId,"Catalogue ABC","Test Catalogue");
+            UUID.randomUUID().toString(), userId, "Catalogue ABC", "Test Catalogue");
     catalogueRepo.save(catalogue);
     org.arjun.cataloguemicroservice.Catalogue protoCatalogue =
             org.arjun.cataloguemicroservice.Catalogue.newBuilder()
                     .setUserId(userId).setCatalogueName("Catalogue ABC")
                     .setCatalogueId(catalogue.getCatalogueId()).build();
-    assertSame(protoCatalogue.getCatalogueId(),catalogueServiceUtil.toProto(catalogue).getCatalogueId());
+    assertSame(protoCatalogue.getCatalogueId(), catalogueServiceUtil.toProto(catalogue).getCatalogueId());
     catalogueRepo.deleteById(catalogue.getCatalogueId());
   }
 
   @Test
   void checkCatalogueExistenceByUserIdAndCatalogueName() {
     Catalogue catalogue = new Catalogue(
-            UUID.randomUUID().toString(),userId,"Catalogue ABC","Test Catalogue");
+            UUID.randomUUID().toString(), userId, "Catalogue ABC", "Test Catalogue");
     catalogueRepo.save(catalogue);
-    assertTrue(catalogueServiceUtil.checkCatalogueExistenceByUserIdAndCatalogueName(userId,"Catalogue ABC"));
+    assertTrue(catalogueServiceUtil.checkCatalogueExistenceByUserIdAndCatalogueName(userId, "Catalogue ABC"));
     catalogueRepo.deleteById(catalogue.getCatalogueId());
-    assertFalse(catalogueServiceUtil.checkCatalogueExistenceByUserIdAndCatalogueName(userId,"Catalogue ABC"));
+    assertFalse(catalogueServiceUtil.checkCatalogueExistenceByUserIdAndCatalogueName(userId, "Catalogue ABC"));
   }
 
   @Test
   void checkCatalogueExistenceById() {
     Catalogue catalogue = new Catalogue(
-            UUID.randomUUID().toString(),userId,"Catalogue ABC","Test Catalogue");
+            UUID.randomUUID().toString(), userId, "Catalogue ABC", "Test Catalogue");
     catalogueRepo.save(catalogue);
     assertTrue(catalogueServiceUtil.checkCatalogueExistenceById(catalogue.getCatalogueId()));
     catalogueRepo.deleteById(catalogue.getCatalogueId());

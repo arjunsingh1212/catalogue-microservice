@@ -1,24 +1,25 @@
 package org.arjun.cataloguemicroservice.service;
 
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
 
 public interface Item {
 
-  org.arjun.cataloguemicroservice.entity.Item
+  CompletableFuture<org.arjun.cataloguemicroservice.entity.Item>
       createItemService(final org.arjun.cataloguemicroservice.entity.Item item);
 
   void deleteItemService(final String itemId);
 
-  org.arjun.cataloguemicroservice.entity.Item
+  CompletableFuture<org.arjun.cataloguemicroservice.entity.Item>
       getItemService(final String itemId,final String parentCatalogueId);
 
-  List<org.arjun.cataloguemicroservice.entity.Item>
+  CompletableFuture<List<org.arjun.cataloguemicroservice.entity.Item>>
       getItemStreamByCatalogueId(final String catalogueId);
 
-  List<org.arjun.cataloguemicroservice.entity.Item>
+  CompletableFuture<List<org.arjun.cataloguemicroservice.entity.Item>>
       getItemStreamByUserId(final String userId);
 
-  List<org.arjun.cataloguemicroservice.entity.Item>
+  CompletableFuture<List<org.arjun.cataloguemicroservice.entity.Item>>
       getItemStreamAll();
 
   org.arjun.cataloguemicroservice.Item toProto(
