@@ -1,9 +1,9 @@
 syntax = "proto3";
 
-package org.arjun.CatalogueMicroservice;
+package org.arjun.cataloguemicroservice;
 
 option java_multiple_files = true;
-option java_package = "org.arjun.CatalogueMicroservice";
+option java_package = "org.arjun.cataloguemicroservice";
 
 import "google/protobuf/empty.proto";
 
@@ -13,7 +13,7 @@ service ItemService {
   rpc CreateItem(CreateItemRequest) returns (Item);
 
   //Add a stream of Items to the DB
-  rpc CreateItemStream(stream CreateItemStreamRequest) returns (ItemStream);
+  rpc CreateItemStream(stream CreateItemStreamRequest) returns (CreateItemStreamResponse);
 
   //Delete a specific Item
   rpc DeleteItem(DeleteItemRequest) returns (google.protobuf.Empty);
@@ -52,6 +52,13 @@ service UserService {
   rpc GetUserStream(GetUserStreamRequest) returns (stream UserStream);
 }
 
+////Response error message and Status Code
+//message ResponseStatus {
+//  //Status Code of Response (OK/NOT_OK)
+//  string status = 1;
+//  //error message of Response (Used when error occurs)
+//  string error_message = 2;
+//}
 
 //User Data
 message User {
@@ -119,7 +126,7 @@ message DeleteCatalogueRequest {
 //Request to get a specific catalogues
 message GetCatalogueRequest {
   //id of Catalogue
-  string name = 1;
+  string catalogue_id = 1;
 }
 
 //Request to get catalogues based on either of the two criteria: all, of specific user
@@ -179,6 +186,14 @@ message CreateItemStreamRequest {
   Item item = 1;
 }
 
+//Data for stream of item creation response
+message CreateItemStreamResponse {
+  //Response as status message
+  string status = 1;
+  //Failure/Success code (0 for success)
+  int32 status_code = 2;
+}
+
 //Response received after CreateItemsStreamRequest
 message ItemStream {
   //List of items (to be used in stream)
@@ -195,6 +210,8 @@ message DeleteItemRequest {
 message GetItemRequest {
   //Sending id of item
   string item_id = 1;
+  //Sending id of catalogue (parent)
+  string parent_catalogue_id = 2;
 }
 
 //Request to get items based on either of the three criteria: all, catalogue, user

@@ -30,9 +30,8 @@ CREATE TABLE `catalogue` (
   `created_on` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_on` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`catalogue_id`),
-  UNIQUE KEY `catalogue_name_UNIQUE` (`catalogue_name`),
-  UNIQUE KEY `user_id_UNIQUE` (`user_id`),
-  CONSTRAINT `catalogue_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `user` (`user_id`) ON DELETE CASCADE
+  KEY `fk_idx` (`user_id`),
+  CONSTRAINT `fk` FOREIGN KEY (`user_id`) REFERENCES `user` (`user_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -42,6 +41,7 @@ CREATE TABLE `catalogue` (
 
 LOCK TABLES `catalogue` WRITE;
 /*!40000 ALTER TABLE `catalogue` DISABLE KEYS */;
+INSERT INTO `catalogue` VALUES ('142e7a2b-a847-4e81-b7eb-014ee52efe64','3660ada0-f532-44f5-b28c-1ca573fc970b','Books','This catalogue contains the books','2021-06-18 17:12:02','2021-06-18 17:12:02'),('99499453-b132-48ae-8a87-fad9686f4a6b','3660ada0-f532-44f5-b28c-1ca573fc970b','Books','This catalogue contains the books','2021-06-18 17:23:59','2021-06-18 17:23:59'),('f7794a0b-8a34-449b-a5b1-af3609aa31c6','3660ada0-f532-44f5-b28c-1ca573fc970b','Books','This catalogue contains the books','2021-06-18 17:22:08','2021-06-18 17:22:08');
 /*!40000 ALTER TABLE `catalogue` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -53,17 +53,15 @@ DROP TABLE IF EXISTS `item`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
  SET character_set_client = utf8mb4 ;
 CREATE TABLE `item` (
-  `item_id` varchar(36) NOT NULL,
-  `catalogue_id` varchar(36) NOT NULL,
-  `item_name` varchar(255) NOT NULL,
+  `item_id` varchar(36) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `catalogue_id` varchar(36) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `name` varchar(255) DEFAULT NULL,
   `created_on` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_on` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  `item_price` decimal(10,0) DEFAULT NULL,
-  `item_quantity` int DEFAULT NULL,
-  `item_type` enum('TYPE_UNSPECIFIED','RAW','MANUFACTURED','IMPORTED') DEFAULT NULL,
-  PRIMARY KEY (`item_id`),
-  UNIQUE KEY `catalogue_id_UNIQUE` (`catalogue_id`),
-  CONSTRAINT `item_ibfk_1` FOREIGN KEY (`catalogue_id`) REFERENCES `catalogue` (`catalogue_id`) ON DELETE CASCADE
+  `price` decimal(10,2) DEFAULT NULL,
+  `quantity` int DEFAULT NULL,
+  `type` enum('TYPE_UNSPECIFIED','RAW','MANUFACTURED','IMPORTED') NOT NULL,
+  PRIMARY KEY (`item_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -73,6 +71,7 @@ CREATE TABLE `item` (
 
 LOCK TABLES `item` WRITE;
 /*!40000 ALTER TABLE `item` DISABLE KEYS */;
+INSERT INTO `item` VALUES ('8c0e7de8-1156-41f2-b582-d756785927dd','f7794a0b-8a34-449b-a5b1-af3609aa31c6','Book','2021-06-20 18:01:16','2021-06-20 18:01:16',30.30,3,'RAW');
 /*!40000 ALTER TABLE `item` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -85,7 +84,7 @@ DROP TABLE IF EXISTS `user`;
  SET character_set_client = utf8mb4 ;
 CREATE TABLE `user` (
   `user_id` varchar(36) NOT NULL,
-  `user_name` varchar(255) NOT NULL,
+  `user_name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `created_on` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_on` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`user_id`),
@@ -99,6 +98,7 @@ CREATE TABLE `user` (
 
 LOCK TABLES `user` WRITE;
 /*!40000 ALTER TABLE `user` DISABLE KEYS */;
+INSERT INTO `user` VALUES ('00ed1cba-b9f2-46fc-b662-4ff30955f470','Partner A','2021-06-17 04:43:05','2021-06-17 04:43:05'),('3660ada0-f532-44f5-b28c-1ca573fc970b','Partner B','2021-06-17 04:45:32','2021-06-17 04:45:32'),('413a8992-3831-4b7f-a255-5c29a8223a52','Partner C','2021-06-18 08:53:49','2021-06-18 08:53:49'),('8ef044c7-d041-45dc-b945-f1b8bf05e15b','Partner Y','2021-06-21 03:36:41','2021-06-21 03:36:41'),('b19b987a-f6c7-4f45-935d-5619b8ea99b0','Partner Z','2021-06-21 03:31:22','2021-06-21 03:31:22'),('c16be34c-8f1e-4357-a7ba-b0ce864d5186','Partner X','2021-06-21 03:46:02','2021-06-21 03:46:02');
 /*!40000 ALTER TABLE `user` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -111,4 +111,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2021-06-16 14:27:37
+-- Dump completed on 2021-06-22 15:47:28
